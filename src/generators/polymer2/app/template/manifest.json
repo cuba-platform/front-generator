@@ -3,6 +3,7 @@
   "short_name": "<%= project.name %>",
   "start_url": "/<%= basePath %>/",
   "display": "standalone",
+  "theme_color": "<%= baseColor %>",
   "background_color": "<%= baseColor %>",
   "icons": [
     {
