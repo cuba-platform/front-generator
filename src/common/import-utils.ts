@@ -12,6 +12,8 @@ export type ImportInfo = {
 
 export function createIncludes(importInfos: ImportInfo[], current?: ImportInfo): ts.ImportDeclaration[] {
 
+  //todo do not add space between each include line
+
   //filter unique and exclude current entity, group by importPath
   const importByPathMap: Map<string, ImportInfo[]> = new Map();
   importInfos
@@ -51,7 +53,7 @@ export function importDeclaration(identifiers: string[], moduleSpec: string): Im
 export function entityImportInfo(importedEntity: ProjectEntityInfo, prefix: string = ''): ImportInfo {
   const basePrefix = importedEntity.isBaseProjectEntity ? '' + BASE_ENTITIES_DIR : '';
   return {
-    importPath: './' + getEntityModulePath(importedEntity.entity, path.join(prefix, basePrefix)),
+    importPath: normalizeImportPath(getEntityModulePath(importedEntity.entity, path.join(prefix, basePrefix))),
     className: importedEntity.entity.className
   };
 }
@@ -59,10 +61,13 @@ export function entityImportInfo(importedEntity: ProjectEntityInfo, prefix: stri
 export function enumImportInfo(ed: EnumDeclaration, pathPrefix?: string) {
   return {
     className: ed.name.text,
-    importPath: path.join(pathPrefix ? pathPrefix : '', `${ENUMS_DIR}/${ENUMS_FILE}`)
+    importPath: normalizeImportPath(path.join(pathPrefix ? pathPrefix : '', `${ENUMS_DIR}/${ENUMS_FILE}`))
   };
 }
 
+function normalizeImportPath(impPath: string) {
+  return !impPath.startsWith('./') && !impPath.startsWith('..') ?  './' + impPath : impPath;
+}
 
 export function isImportEquals(ii1: ImportInfo | undefined, ii2: ImportInfo | undefined): boolean {
   if (ii1 == undefined && ii2 == undefined) return true;

@@ -8,13 +8,13 @@ import {createEnums} from "../common/model/enums-generation";
 import {renderTSNodes} from "../common/ts-helpers";
 import {EnumDeclaration} from "typescript";
 import {createIncludes} from "../common/import-utils";
-import {createTestProjectEntityInfo} from "./test-commons";
+import {assertContent, createTestProjectEntityInfo} from "./test-commons";
 
 const enumsModel: Enum[] = require('./enums-model.json');
 const entityModel: Entity = require('./entity-model.json');
 const enumsModelDuplicates: Enum[] = require('./enums-model--identical-names.json');
 
-const modelPath = require.resolve('../../test/projectModel.json');
+const modelPath = require.resolve('../../test/projectModel2.json');
 const tmpGenerationDir = path.join(process.cwd(), '.tmp');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
@@ -65,7 +65,7 @@ describe('generator', function () {
 describe('generate TS entity', function () {
 
   it(createEntityClass.name, function () {
-    const enMap = entitiesMap([
+    const enMap = fillEntitiesMap([
         'com.company.mpg.entity.Garage',
         'com.company.mpg.entity.TechnicalCertificate',
       ],
@@ -139,24 +139,7 @@ describe('generate TS enums', () => {
   });
 });
 
-export function assertContent(actual: string, expect: string, multiline: boolean = true) {
-  assert.strictEqual(drain(actual, multiline), drain(expect, multiline));
-}
-
-function drain(result: string, multiline: boolean = true) {
-  return multiline
-    ? result
-      .replace(/^\s*\n/gm, '')
-      .replace(/[ ]{2,}/g, ' ')
-      .replace(/\n /g, '\n')
-      .trim()
-    : result
-      .replace(/\n/g, ' ')
-      .replace(/ {2,}/g, ' ')
-      .trim()
-}
-
-function entitiesMap(classNames: string[], baseClassNames: string[]): Map<string, ProjectEntityInfo> {
+function fillEntitiesMap(classNames: string[], baseClassNames: string[]): Map<string, ProjectEntityInfo> {
   const entitiesMap = new Map<string, ProjectEntityInfo>();
   classNames.forEach(en => entitiesMap.set(en, createTestProjectEntityInfo(en)));
   baseClassNames.forEach(en => entitiesMap.set(en, createTestProjectEntityInfo(en, true)));
