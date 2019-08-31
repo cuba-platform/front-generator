@@ -12,6 +12,8 @@ export type ImportInfo = {
 
 export function createIncludes(importInfos: ImportInfo[], current?: ImportInfo): ts.ImportDeclaration[] {
 
+  //todo do not add space between each include line
+
   //filter unique and exclude current entity, group by importPath
   const importByPathMap: Map<string, ImportInfo[]> = new Map();
   importInfos

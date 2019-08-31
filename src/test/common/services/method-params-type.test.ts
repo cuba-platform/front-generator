@@ -5,8 +5,7 @@ import {
   parseParamType
 } from "../../../common/services/method-params-type";
 import {renderTSNodes} from "../../../common/ts-helpers";
-import {assertContent} from "../../generator.test";
-import {modelCtx} from "../../test-commons";
+import {assertContent, modelCtx} from "../../test-commons";
 import {Entity, Enum, RestService} from "../../../common/model/cuba-model";
 import {isImportEquals} from "../../../common/import-utils";
 import * as assert from "assert";

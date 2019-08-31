@@ -1,7 +1,6 @@
 import {renderTSNodes} from "../../../common/ts-helpers";
 import {RestQuery} from "../../../common/model/cuba-model";
-import {createTestProjectEntityInfo, modelCtx} from "../../test-commons";
-import {assertContent} from "../../generator.test";
+import {assertContent, createTestProjectEntityInfo, modelCtx} from "../../test-commons";
 import {createQuery, generateQueries} from "../../../common/services/queries-generation";
 
 const queriesModelCar: RestQuery[] = require('../../fixtures/query-model-car.json');
