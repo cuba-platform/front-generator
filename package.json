@@ -14,10 +14,13 @@
     "build": "rimraf lib && tsc && node scripts/copy-templates.js",
     "watch": "tsc -w",
     "test": "mocha --config test/mocha.js.opts",
-    "test:e2e:sdk": "node test/e2e/sdk.test.js",
-    "test:e2e:react": "node test/e2e/react-client.test.js",
-    "test:e2e:polymer2": "node test/e2e/polymer2.test.js",
-    "test:e2e:polymer2-ts": "node test/e2e/polymer2-ts.test.js",
+
+    "test:e2e:": "mocha 'test/e2e/*.test.js' --grep 'polymer2|sdk|react' --timeout 0",
+    "test:e2e:sdk": "mocha 'test/e2e/sdk.test.js'  -g 'sdk' --timeout 0",
+    "test:e2e:react": "mocha 'test/e2e/react-client.test.js'  -g 'react' --timeout 0",
+    "test:e2e:polymer2": "mocha 'test/e2e/polymer2.test.js'  -g 'polymer2' --timeout 0",
+    "test:e2e:polymer2-ts": "mocha 'test/e2e/polymer2-ts.test.js'  -g 'polymer2-ts' --timeout 0",
+
     "prepublishOnly": "npm run build"
   },
   "repository": {

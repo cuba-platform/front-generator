@@ -5,9 +5,8 @@ const answers = require('./answers');
 
 const appDir = 'test/e2e/generated/polymer2-ts-app';
 
-(async function () {
-
-  await rimraf('test/e2e/generated/polymer2-ts-app/*');
+describe('polymer2-ts', () => {
+  it('should generate polymer 2 typescript app', function () {
 
   const generationProcesses = [];
 
@@ -18,13 +17,12 @@ const appDir = 'test/e2e/generated/polymer2-ts-app';
   generationProcesses.push(runGenerator('polymer2-typescript:entity-edit', `${appDir}/src/entity-edit`, answers.entityEdit, '../'));
   generationProcesses.push(runGenerator('polymer2-typescript:entity-management', `${appDir}/src/entity-management`, answers.entityManagement, '../'));
 
-  Promise.all(generationProcesses)
-    .then(() => {
-      console.log('e2e:polymer2-ts: generation complete test status - PASSED');
-    })
+  return rimraf('test/e2e/generated/polymer2-ts-app/*')
+    .then(() => Promise.all(generationProcesses))
     .catch((e) => {
       console.log(e);
       process.exit(1);
     });
 
-})();
+  })
+});
