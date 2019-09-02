@@ -5,9 +5,8 @@ const answers = require('./answers');
 
 const appDir = 'test/e2e/generated/polymer2-app';
 
-(async function () {
-
-  await rimraf('test/e2e/generated/polymer2-app/*');
+describe('polymer2', () => {
+  it('should generate polymer 2 app', function () {
 
   const generationProcesses = [];
 
@@ -21,13 +20,12 @@ const appDir = 'test/e2e/generated/polymer2-app';
   generationProcesses.push(runGenerator('polymer2:service-form', `${appDir}/src/service-form`, answers.serviceForm, '../'));
   generationProcesses.push(runGenerator('polymer2:service-data', `${appDir}/src/service-data`, answers.serviceData, '../'));
 
-  Promise.all(generationProcesses)
-    .then(() => {
-      console.log('e2e:polymer2: generation complete test status - PASSED');
-    })
+  return rimraf('test/e2e/generated/polymer2-app/*')
+    .then(() => Promise.all(generationProcesses))
     .catch((e) => {
       console.log(e);
       process.exit(1);
     });
 
-})();
+  })
+});
