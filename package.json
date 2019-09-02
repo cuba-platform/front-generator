@@ -14,9 +14,10 @@
     "build": "rimraf lib && tsc && node scripts/copy-templates.js",
     "watch": "tsc -w",
     "test": "mocha --config test/mocha.js.opts",
-    "test:e2e": "node test/e2e.test.js",
     "test:e2e:sdk": "node test/e2e/sdk.test.js",
     "test:e2e:react": "node test/e2e/react-client.test.js",
+    "test:e2e:polymer2": "node test/e2e/polymer2.test.js",
+    "test:e2e:polymer2-ts": "node test/e2e/polymer2-ts.test.js",
     "prepublishOnly": "npm run build"
   },
   "repository": {

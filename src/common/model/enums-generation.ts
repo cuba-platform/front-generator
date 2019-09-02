@@ -9,6 +9,9 @@ export type EnumInfo = {
 }
 
 export function createEnums(enums: Enum[]): EnumInfo[] {
+
+  //todo sort before generation - model generation could change order and test fail
+
   const enDeclarations: EnumInfo[] = [];
   const duplicates: string[] = [];
 

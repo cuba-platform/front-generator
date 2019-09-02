@@ -21,8 +21,18 @@ function runGenerator(name, dest, answersJSONString, dirShift, modelFile = 'proj
   if (dirShift) {
     command += ` --dirShift ${dirShift}`
   }
-  console.log(command);
-  return exec(command);
+
+  return cmd(command,
+    `e2e:test: start generator '${name}' by running '${command}'`,
+    `e2e:test: generation ${name} - DONE`);
+}
+
+function cmd(command, startMessage, doneMessage) {
+  if (startMessage) console.log(startMessage);
+  return exec(command)
+    .then((onful, onreject) => {
+      return logOutput(onful, onreject, doneMessage)
+    });
 }
 
 function logOutput(onful, onreject, comment) {
@@ -60,6 +70,6 @@ function drain(content, multiline = true) {
 
 module.exports = {
   runGenerator: runGenerator,
-  logOutput: logOutput,
-  assertContent: assertContent
+  assertContent: assertContent,
+  cmd: cmd
 };
