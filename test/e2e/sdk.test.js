@@ -2,40 +2,38 @@ const {promisify} = require('util');
 const path = require('path');
 const rimraf = promisify(require('rimraf'));
 const fs = require('fs');
-const {runGenerator, cmd, assertContent} = require('./e2e-common');
+const {runGenerator, cmd, assertContent, init} = require('./e2e-common')('sdk');
 
-const sdkAppDir = 'test/e2e/generated/sdk';
+const appDir = 'test/e2e/generated/sdk';
 const fixturesDir = 'test/e2e/fixtures/sdk';
 
 
-describe('sdk', () => {
+describe('sdk generator integration test', () => {
   it('should generate sdk app', function () {
-    return rimraf('.tmp/*')
-      .then(() => runGenerator('sdk:all', sdkAppDir))
+
+    init();
+
+    return rimraf(`${appDir}/*`)
+      .then(() => runGenerator('all', appDir))
       .then(() => {
         console.log('e2e:sdk: start files comparison with expect gauges');
-        assertContent('enums/enums.ts', sdkAppDir);
-        assertContent('entities/mpg$Car.ts', sdkAppDir);
-        assertContent('entities/mpg$SparePart.ts', sdkAppDir);
-        assertContent('services.ts', sdkAppDir);
-        assertContent('queries.ts', sdkAppDir);
+        assertContent('enums/enums.ts', appDir);
+        assertContent('entities/mpg$Car.ts', appDir);
+        assertContent('entities/mpg$SparePart.ts', appDir);
+        assertContent('services.ts', appDir);
+        assertContent('queries.ts', appDir);
 
-        console.log('\ne2e:sdk: prepare to compile sdk - copy tsconfig.json');
-        fs.copyFileSync(path.join(fixturesDir, 'tsconfig.json'), path.join(sdkAppDir, 'tsconfig.json'));
+        console.log('\ne2e:sdk: prepare to compile sdk');
+        fs.copyFileSync(path.join(fixturesDir, 'tsconfig.json'), path.join(appDir, 'tsconfig.json'));
 
-        return cmd(`cd ${sdkAppDir} && npm init -y && npm install typescript @cuba-platform/rest`,
+        return cmd(`cd ${appDir} && npm init -y && npm install typescript @cuba-platform/rest`,
           'e2e:sdk: prepare to compile sdk - install packages',
           'e2e:sdk: compile packages - DONE');
       })
       .then(() =>
         cmd(`./node_modules/.bin/tsc`,
           'e2e:sdk: start compile sdk',
-          'e2e:sdk: compile sdk - DONE')
-      )
-      .catch((e) => {
-        console.log(e);
-        process.exit(1);
-      });
-
+          'e2e:sdk: compile sdk - DONE'))
+      .then(() => console.log('e2e:sdk: sdk generation test - PASSED'));
   });
 });

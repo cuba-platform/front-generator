@@ -1,20 +1,22 @@
 const path = require('path');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
-const {runGenerator, assertContent} = require('./e2e-common');
+const {cmd, runGenerator, assertContent, init} = require('./e2e-common')('react-typescript');
 const answers = require('./answers');
-const {cmd} = require("./e2e-common");
 
-const reactAppDir = 'test/e2e/generated/react-client';
+const appDir = 'test/e2e/generated/react-client';
 
-describe('react', () => {
+describe('react typescript generator integration test', () => {
   it('should generate react app', function () {
-    return  rimraf('test/e2e/generated/*')
-      .then(() => runGenerator('react-typescript:app', reactAppDir))
-      .then(() => {
-        console.log('start files comparison with expect gauges');
 
-        const srcCubaDir = path.join(reactAppDir, 'src/cuba');
+    init();
+
+    return  rimraf(`${appDir}/*`)
+      .then(() => runGenerator('app', appDir))
+      .then(() => {
+        console.log('e2e:react: start files comparison with expect gauges');
+
+        const srcCubaDir = path.join(appDir, 'src/cuba');
         assertContent('enums/enums.ts', srcCubaDir);
         assertContent('entities/mpg$Car.ts', srcCubaDir);
         assertContent('entities/mpg$SparePart.ts', srcCubaDir);
@@ -24,23 +26,22 @@ describe('react', () => {
         // assertContent('services.ts', srcCubaDir);
         // assertContent('queries.ts', srcCubaDir);
       })
-      .then(() => runGenerator('react-typescript:entity-cards', `${reactAppDir}/src/app/entity-cards`,
+      .then(() => runGenerator('entity-cards', `${appDir}/src/app/entity-cards`,
         answers.entityCards, '../../')
       )
-      .then(() => runGenerator('react-typescript:entity-management', `${reactAppDir}/src/app/entity-management`,
+      .then(() => runGenerator('entity-management', `${appDir}/src/app/entity-management`,
         answers.entityManagement, '../../')
       )
-      .then(() => cmd(`cd ${reactAppDir} && npm install`,
+      .then(() => console.log('e2e:react: generation complete, start compilation'))
+      .then(() => cmd(`cd ${appDir} && npm install`,
         'e2e:react-client: start compile react-client after generation  - npm install',
         'e2e:react-client: start compile react-client after generation - npm install - DONE')
       )
       .then(() => cmd('npm run build',
         'e2e:react-client: start compile react-client after generation - npm run build',
         'e2e:react-client: start compile react-client after generation - npm run build - DONE')
-      ).catch((e) => {
-        console.log(e);
-        process.exit(1);
-      });
+      )
+      .then(() => console.log('e2e:react: react app generation test - PASSED'));
 
   });
 });

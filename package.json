@@ -15,7 +15,7 @@
     "watch": "tsc -w",
     "test": "mocha --config test/mocha.js.opts",
 
-    "test:e2e:": "mocha 'test/e2e/*.test.js' --grep 'polymer2|sdk|react' --timeout 0",
+    "test:e2e": "mocha 'test/e2e/*.test.js' --grep 'polymer2|sdk|react' --timeout 0",
     "test:e2e:sdk": "mocha 'test/e2e/sdk.test.js'  -g 'sdk' --timeout 0",
     "test:e2e:react": "mocha 'test/e2e/react-client.test.js'  -g 'react' --timeout 0",
     "test:e2e:polymer2": "mocha 'test/e2e/polymer2.test.js'  -g 'polymer2' --timeout 0",
