@@ -30,6 +30,7 @@ module.exports = function (generatorName) {
     fs.appendFileSync(logFileName, message + '\n');
   }
 
+  //todo problems with projectModel path
   function runGenerator(moduleName, dest, answersJSONString, dirShift, modelFile = 'projectModel2.json') {
     const pathToModel = path.join(process.cwd(), 'test', modelFile);
 
@@ -55,6 +56,9 @@ module.exports = function (generatorName) {
     return exec(command)
       .then((onful, onreject) => {
         return logOutput(onful, onreject, doneMessage)
+      }).catch((err) => {
+        logOutput(undefined, err, `Error: Command failed: ${command}`);
+        throw err;
       });
   }
 
