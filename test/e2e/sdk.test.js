@@ -31,9 +31,10 @@ describe('sdk generator integration test', () => {
           'e2e:sdk: compile packages - DONE');
       })
       .then(() =>
-        cmd(`./node_modules/.bin/tsc`,
+        cmd(`cd ${appDir} && ./node_modules/.bin/tsc`,
           'e2e:sdk: start compile sdk',
           'e2e:sdk: compile sdk - DONE'))
+      //todo add lib/** files assert
       .then(() => console.log('e2e:sdk: sdk generation test - PASSED'));
   });
 });
