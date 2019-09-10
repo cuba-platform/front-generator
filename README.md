@@ -84,13 +84,26 @@ npm test
 ## Integration tests
 Integration tests are used compiled version of front-generator. To apply your code changes you need to run ```npm run compile``` before testing.
 <br>
-Apps and sdk generated in ```./tmp``` directory.
-### Run all
+Apps and sdk generated in ```./test/e2e/generated``` directory.
+### Run all e2e tests
 ```bash
 npm run test:e2e
 ```
 
-### SDK generation
+### Generators e2e tests
+SDK
 ```bash
 npm run test:e2e:sdk
+```
+React client
+```bash
+npm run test:e2e:react
+```
+Polymer 2
+```bash
+test:e2e:polymer2
+```
+Polymer 2 typescript
+```bash
+test:e2e:polymer2-ts
 ```
