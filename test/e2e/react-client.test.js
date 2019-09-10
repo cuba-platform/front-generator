@@ -9,6 +9,7 @@ const appDir = 'test/e2e/generated/react-client';
 describe('react typescript generator integration test', () => {
   it('should generate react app', function () {
 
+    //todo react-client test with empty projectModel
     init();
 
     return  rimraf(`${appDir}/*`)
