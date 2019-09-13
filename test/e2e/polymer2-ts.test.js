@@ -5,7 +5,7 @@ const answers = require('./answers');
 
 const appDir = 'test/e2e/generated/polymer2-ts-app';
 
-describe('polymer2-ts generator integration test', () => {
+describe('test:e2e:polymer2-ts', () => {
   it('should generate polymer 2 typescript app', function () {
 
     init();

@@ -3,8 +3,8 @@ import {ProjectEntityInfo} from "../common/model/entities-generation";
 import {collectModelContext, ModelContext} from "../common/utils";
 import * as assert from "assert";
 
-const enumsModel: Enum[] = require('./enums-model.json');
-const entityModel: Entity = require('./entity-model.json');
+const enumsModel: Enum[] = require('./fixtures/enums-model.json');
+const entityModel: Entity = require('./fixtures/entity-model.json');
 
 export function modelCtx(): ModelContext {
   return collectModelContext({entities: [entityModel], enums: enumsModel} as any);

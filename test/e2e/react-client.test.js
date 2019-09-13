@@ -6,10 +6,11 @@ const answers = require('./answers');
 
 const appDir = 'test/e2e/generated/react-client';
 
-describe('react typescript generator integration test', () => {
+describe('test:e2e:react', () => {
   it('should generate react app', function () {
 
     //todo react-client test with empty projectModel
+    //todo compilation should use same config as on 'react-client start'
     init();
 
     return  rimraf(`${appDir}/*`)

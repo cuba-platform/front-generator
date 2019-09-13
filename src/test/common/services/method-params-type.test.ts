@@ -12,8 +12,8 @@ import * as assert from "assert";
 import {collectModelContext} from "../../../common/utils";
 const servicesModel: RestService[] = require('./../../fixtures/service-model.json');
 
-const enumsModelWithDuplicates: Enum[] = require('../../enums-model--identical-names.json');
-const entityModel: Entity = require('./../../entity-model.json');
+const enumsModelWithDuplicates: Enum[] = require('../../fixtures/enums-model--identical-names.json');
+const entityModel: Entity = require('../../fixtures/entity-model.json');
 const baseEntityModel: Entity = require('../../fixtures/base-entity-model.json');
 
 describe('should generate new type form method params, an imports for this type', () => {
