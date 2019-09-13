@@ -4,7 +4,7 @@ import {assertContent, createTestProjectEntityInfo} from "../../../test-commons"
 import {EnumDeclaration} from "typescript";
 import {Entity} from "../../../../common/model/cuba-model";
 import {renderTSNodes} from "../../../../common/ts-helpers";
-import {createIncludes} from "../../../../common/import-utils";
+import {createIncludes} from "../../../../generators/sdk/import-utils";
 
 const entityModel: Entity = require('../../../fixtures/entity-model.json');
 

@@ -2,7 +2,7 @@ const path = require('path');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
 const {cmd, runGenerator, assertContent, init} = require('./e2e-common')('react-typescript');
-const answers = require('./answers');
+const answers = require('./fixtures/answers.json');
 
 const appDir = 'test/e2e/generated/react-client';
 
@@ -29,10 +29,10 @@ describe('test:e2e:react', () => {
         // assertContent('queries.ts', srcCubaDir);
       })
       .then(() => runGenerator('entity-cards', `${appDir}/src/app/entity-cards`,
-        answers.entityCards, '../../')
+        JSON.stringify(answers.entityCards), '../../')
       )
       .then(() => runGenerator('entity-management', `${appDir}/src/app/entity-management`,
-        answers.entityManagement, '../../')
+        JSON.stringify(answers.entityManagement), '../../')
       )
       .then(() => console.log('e2e:react: generation complete, start compilation'))
       .then(() => cmd(`cd ${appDir} && npm install`,

@@ -1,7 +1,7 @@
 import {RestParam, RestServiceMethod} from "../../../common/model/cuba-model";
 import * as ts from "typescript";
 import {TypeAliasDeclaration, TypeElement, TypeNode} from "typescript";
-import {entityImportInfo, enumImportInfo, ImportInfo} from "../../../common/import-utils";
+import {entityImportInfo, enumImportInfo, ImportInfo} from "../import-utils";
 import {ENTITIES_DIR} from "../../../common/constants";
 import {exportModifier} from "../../../common/ts-shorthands";
 import {ModelContext} from "../model/model-utils";

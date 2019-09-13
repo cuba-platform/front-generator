@@ -7,7 +7,7 @@ import {
 import {renderTSNodes} from "../../../../common/ts-helpers";
 import {assertContent, modelCtx} from "../../../test-commons";
 import {Entity, Enum, RestService} from "../../../../common/model/cuba-model";
-import {isImportEquals} from "../../../../common/import-utils";
+import {isImportEquals} from "../../../../generators/sdk/import-utils";
 import * as assert from "assert";
 import {collectModelContext} from "../../../../generators/sdk/model/model-utils";
 const servicesModel: RestService[] = require('../../../fixtures/service-model.json');

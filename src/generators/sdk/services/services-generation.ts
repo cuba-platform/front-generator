@@ -11,7 +11,7 @@ import {
 } from "typescript";
 import {renderTSNodes} from "../../../common/ts-helpers";
 import {collectMethods, createMethodParamsType, MethodWithOverloads} from "./method-params-type";
-import {createIncludes, importDeclaration, ImportInfo} from "../../../common/import-utils";
+import {createIncludes, importDeclaration, ImportInfo} from "../import-utils";
 import {CUBA_APP_MODULE_SPEC, CUBA_APP_NAME, CUBA_APP_TYPE, FETCH_OPTIONS_NAME, FETCH_OPTIONS_TYPE} from "../../../common/constants";
 import {exportModifier, idn, param, str} from "../../../common/ts-shorthands";
 import {ModelContext} from "../model/model-utils";

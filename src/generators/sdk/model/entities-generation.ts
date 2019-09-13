@@ -5,7 +5,7 @@ import * as ts from "typescript";
 import {EnumDeclaration} from "typescript";
 import {renderTSNodes} from "../../../common/ts-helpers";
 import {createEntityViewTypes} from "./entity-views-generation";
-import {createIncludes, entityImportInfo, enumImportInfo, ImportInfo} from "../../../common/import-utils";
+import {createIncludes, entityImportInfo, enumImportInfo, ImportInfo} from "../import-utils";
 import {BASE_ENTITIES_DIR, ENTITIES_DIR, ENUMS_DIR, ENUMS_FILE} from "../../../common/constants";
 import {getEntityModulePath} from "../../../common/utils";
 import {collectModelContext, ModelContext} from "./model-utils";
