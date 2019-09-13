@@ -1,7 +1,7 @@
-import {Enum, EnumValue} from "./cuba-model";
+import {Enum, EnumValue} from "../../../common/model/cuba-model";
 import * as ts from "typescript";
 import {EnumDeclaration, EnumMember} from "typescript";
-import {fqnToName} from "../utils";
+import {fqnToName} from "../../../common/utils";
 
 export type EnumInfo = {
   fqn: string

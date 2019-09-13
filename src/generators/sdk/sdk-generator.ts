@@ -2,10 +2,10 @@ import {BaseGenerator, readProjectModel} from "../../common/generation";
 import {CommonGenerationOptions} from "../../common/cli-options";
 import * as path from "path";
 import {exportProjectModel, getOpenedCubaProjects, StudioProjectInfo} from "../../common/studio/studio-integration";
-import {generateEntities} from "../../common/model/entities-generation";
-import {collectModelContext} from "../../common/utils";
-import {generateServices} from "../../common/services/services-generation";
-import {generateQueries} from "../../common/services/queries-generation";
+import {generateEntities} from "./model/entities-generation";
+import {generateServices} from "./services/services-generation";
+import {generateQueries} from "./services/queries-generation";
+import {collectModelContext} from "./model/model-utils";
 
 interface Answers {
   projectInfo: StudioProjectInfo;

@@ -2,7 +2,7 @@ import {ProjectInfo} from "../../../common/model/cuba-model";
 import {BaseGenerator, readProjectModel} from "../../../common/generation";
 import {CommonGenerationOptions, commonGenerationOptionsConfig} from "../../../common/cli-options";
 import * as path from "path";
-import {generateEntities} from "../../../common/model/entities-generation";
+import {generateEntities} from "../../sdk/model/entities-generation";
 import {exportProjectModel, getOpenedCubaProjects, StudioProjectInfo} from "../../../common/studio/studio-integration";
 import {ownVersion} from "../../../cli";
 

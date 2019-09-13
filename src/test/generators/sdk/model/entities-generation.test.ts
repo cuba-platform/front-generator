@@ -1,4 +1,4 @@
-import {createEntityClass, ProjectEntityInfo} from "../../../../common/model/entities-generation";
+import {createEntityClass, ProjectEntityInfo} from "../../../../generators/sdk/model/entities-generation";
 import {assertContent, createTestProjectEntityInfo} from "../../../test-commons";
 
 import {EnumDeclaration} from "typescript";

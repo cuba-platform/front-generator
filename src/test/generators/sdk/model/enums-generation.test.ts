@@ -1,4 +1,4 @@
-import {createEnums} from "../../../../common/model/enums-generation";
+import {createEnums} from "../../../../generators/sdk/model/enums-generation";
 import {renderTSNodes} from "../../../../common/ts-helpers";
 import {assertContent} from "../../../test-commons";
 import {Enum} from "../../../../common/model/cuba-model";

@@ -1,7 +1,7 @@
 import {Entity, Enum} from "../common/model/cuba-model";
-import {ProjectEntityInfo} from "../common/model/entities-generation";
-import {collectModelContext, ModelContext} from "../common/utils";
+import {ProjectEntityInfo} from "../generators/sdk/model/entities-generation";
 import * as assert from "assert";
+import {collectModelContext, ModelContext} from "../generators/sdk/model/model-utils";
 
 const enumsModel: Enum[] = require('./fixtures/enums-model.json');
 const entityModel: Entity = require('./fixtures/entity-model.json');
