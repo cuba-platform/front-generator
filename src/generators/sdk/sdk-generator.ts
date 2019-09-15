@@ -11,16 +11,22 @@ interface Answers {
   projectInfo: StudioProjectInfo;
 }
 
+enum RunMode {
+  ALL, MODEL
+}
+
 /**
  * Yeoman generator for SDK.
  * Note, yeoman run all methods, declared in class - https://yeoman.io/authoring/#adding-your-own-functionality
  */
-export class SdkGenerator extends BaseGenerator<Answers, {}, CommonGenerationOptions> {
+class SdkGenerator extends BaseGenerator<Answers, {}, CommonGenerationOptions> {
 
   conflicter!: { force: boolean }; //missing in typings
+  runMode: RunMode;
 
-  constructor(args: string | string[], options: CommonGenerationOptions) {
+  constructor(args: string | string[], options: CommonGenerationOptions, runMode: RunMode) {
     super(args, options);
+    this.runMode = runMode;
     this.sourceRoot(path.join(__dirname, 'template'));
   }
 
@@ -62,17 +68,20 @@ export class SdkGenerator extends BaseGenerator<Answers, {}, CommonGenerationOpt
     if (this.cubaProjectModel) {
 
       const {restQueries, restServices} = this.cubaProjectModel;
-      this.log(`Generating to ${this.destinationPath()}`);
+      const runMode = this.runMode.toString().toLowerCase();
+      this.log(`Generating sdk:${runMode} to ${this.destinationPath()}`);
 
       generateEntities(this.cubaProjectModel, path.join(this.destinationRoot()), this.fs);
 
       const ctx = collectModelContext(this.cubaProjectModel);
 
-      const services = generateServices(restServices, ctx);
-      this.fs.write(this.destinationPath('services.ts'), services);
+      if (this.runMode == RunMode.ALL) {
+        const services = generateServices(restServices, ctx);
+        this.fs.write(this.destinationPath('services.ts'), services);
 
-      const queries = generateQueries(restQueries, ctx);
-      this.fs.write(this.destinationPath('queries.ts'), queries);
+        const queries = generateQueries(restQueries, ctx);
+        this.fs.write(this.destinationPath('queries.ts'), queries);
+      }
 
     } else {
       this.env.error({name: 'No project model', message: 'Skip sdk generation - no project model provided'});
@@ -83,4 +92,40 @@ export class SdkGenerator extends BaseGenerator<Answers, {}, CommonGenerationOpt
     this.log(`SDK been successfully generated into ${this.destinationRoot()}`);
   }
 
+}
+
+class SdkGeneratorRunner extends SdkGenerator {
+
+  /**
+   yeoman run all class methods - https://yeoman.io/authoring/#adding-your-own-functionality,
+   but not from parent, so we need method to start generation
+   process from inheritor classes
+   NOTE that all new added methods in SdkGenerator should be added and run here
+   */
+  async generate() {
+    await this.prompting();
+    await this.prepareModel();
+    this.writing();
+    this.end();
+  }
+}
+
+export class SdkAllGenerator extends SdkGeneratorRunner {
+  constructor(args: string | string[], options: CommonGenerationOptions) {
+    super(args, options, RunMode.ALL);
+  }
+
+  async generate() {
+    await super.generate();
+  }
+}
+
+export class SdkModelGenerator extends SdkGeneratorRunner {
+  constructor(args: string | string[], options: CommonGenerationOptions) {
+    super(args, options, RunMode.MODEL);
+  }
+
+  async generate() {
+    await super.generate();
+  }
 }

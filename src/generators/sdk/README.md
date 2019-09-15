@@ -9,8 +9,6 @@ as Typescript classes.
 SDK could be generated in different configurations depends on option passed to ```gen-cuba-front``` command.
 
 ```gen-cuba-front sdk:model``` generates entities and enums<br>
-```gen-cuba-front sdk:services``` generates rest services<br>
-```gen-cuba-front sdk:queries``` generates rest queries<br>
 ```gen-cuba-front sdk:all``` generates all toolkit - entities, enums, queries and services<br>
 
 ## Entities
