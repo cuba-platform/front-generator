@@ -2,9 +2,10 @@ import {ProjectInfo} from "../../../common/model/cuba-model";
 import {BaseGenerator, readProjectModel} from "../../../common/generation";
 import {CommonGenerationOptions, commonGenerationOptionsConfig} from "../../../common/cli-options";
 import * as path from "path";
-import {generateEntities} from "../../sdk/model/entities-generation";
+
 import {exportProjectModel, getOpenedCubaProjects, StudioProjectInfo} from "../../../common/studio/studio-integration";
 import {ownVersion} from "../../../cli";
+import {SdkAllGenerator} from "../../sdk/sdk-generator";
 
 interface TemplateModel {
   title: string;
@@ -26,7 +27,7 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
     this.sourceRoot(path.join(__dirname, 'template'));
   }
 
-  // noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols - yeoman runs all methods from class
   async prompting() {
     if (this.options.model) {
       this.conflicter.force = true;
@@ -52,6 +53,7 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
 
   }
 
+  // noinspection JSUnusedGlobalSymbols - yeoman runs all methods from class
   async prepareModel() {
     if (this.cubaProjectModel) {
       this.model = createModel(this.cubaProjectModel.project);
@@ -63,7 +65,7 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
     }
   }
 
-  // noinspection JSUnusedGlobalSymbols
+  // noinspection JSUnusedGlobalSymbols - yeoman runs all methods from class
   writing() {
     this.log(`Generating to ${this.destinationPath()}`);
 
@@ -78,11 +80,26 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
     this.fs.copyTpl(this.templatePath('.env.development.local'), this.destinationPath('.env.development.local'), this.model);
     this.fs.copy(this.templatePath('_gitignore'), this.destinationPath('.gitignore'));
     this.fs.copy(this.templatePath('_editorconfig'), this.destinationPath('.editorconfig'));
+  }
 
-    if (this.cubaProjectModel) {
-      generateEntities(this.cubaProjectModel, path.join(this.destinationRoot(), 'src/cuba'), this.fs);
-    }
+  // noinspection JSUnusedGlobalSymbols - yeoman runs all methods from class
+  async generateSdk() {
+    const sdkDest = 'src/cuba';
+    this.log(`Generate sdk model and services to ${sdkDest}`);
 
+    //todo case if no model set, but we have 'answers'
+    const sdkOpts = {
+      model: this.options.model,
+      dest: sdkDest
+    };
+
+    const generatorOpts = {
+      Generator: SdkAllGenerator,
+      path: require.resolve('../../sdk/sdk-generator')
+    };
+
+    //todo type not match
+    await this.composeWith(generatorOpts as any, sdkOpts);
   }
 
   end() {
