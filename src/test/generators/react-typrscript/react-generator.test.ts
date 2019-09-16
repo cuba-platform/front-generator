@@ -22,8 +22,8 @@ describe('react generator test', () => {
         })
       )
       .then(() => {
-        assert.ok(fs.existsSync(`src/cuba/entities/base`));
-        assert.ok(fs.existsSync(`src/cuba/enums/enums.ts`));
+        assert.ok(fs.existsSync(`entities/base`));
+        assert.ok(fs.existsSync(`enums/enums.ts`));
       });
   });
 
