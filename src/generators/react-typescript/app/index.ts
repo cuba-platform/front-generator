@@ -21,10 +21,12 @@ interface Answers {
 class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGenerationOptions> {
 
   conflicter!: { force: boolean }; //missing in typings
+  modelPath?: string;
 
   constructor(args: string | string[], options: CommonGenerationOptions) {
     super(args, options);
     this.sourceRoot(path.join(__dirname, 'template'));
+    this.modelPath = this.options.model;
   }
 
   // noinspection JSUnusedGlobalSymbols - yeoman runs all methods from class
@@ -58,9 +60,9 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
     if (this.cubaProjectModel) {
       this.model = createModel(this.cubaProjectModel.project);
     } else if (this.answers) {
-      const modelFilePath = path.join(process.cwd(), 'projectModel.json');
-      await exportProjectModel(this.answers.projectInfo.locationHash, modelFilePath);
-      this.cubaProjectModel = readProjectModel(modelFilePath);
+      this.modelPath = path.join(process.cwd(), 'projectModel.json');
+      await exportProjectModel(this.answers.projectInfo.locationHash, this.modelPath);
+      this.cubaProjectModel = readProjectModel(this.modelPath);
       this.model = createModel(this.cubaProjectModel.project);
     }
   }
@@ -87,9 +89,8 @@ class ReactTSAppGenerator extends BaseGenerator<Answers, TemplateModel, CommonGe
     const sdkDest = 'src/cuba';
     this.log(`Generate sdk model and services to ${sdkDest}`);
 
-    //todo case if no model set, but we have 'answers'
     const sdkOpts = {
-      model: this.options.model,
+      model: this.modelPath,
       dest: sdkDest
     };
 

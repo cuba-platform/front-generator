@@ -12,7 +12,7 @@ interface Answers {
 }
 
 enum RunMode {
-  ALL, MODEL
+  ALL = 'ALL', MODEL = 'MODEL'
 }
 
 /**

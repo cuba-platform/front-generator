@@ -14,7 +14,7 @@ describe('test:e2e:react', () => {
 
   before(() => init());
 
-  it('should generate react app', async function () {
+  it('should generate react app - mpg', async function () {
 
     await rimraf(`${MPG_APP_DIR}/*`);
     await runGenerator('app', MPG_APP_DIR);
@@ -37,7 +37,7 @@ describe('test:e2e:react', () => {
     await installAndBuild('mpg-model', MPG_APP_DIR);
   });
 
-  it('should generate react app from newborn cuba project', async function () {
+  it('should generate react app from newborn cuba project - trusty-dragon', async function () {
 
     await rimraf(`${PRISTINE_APP_DIR}/*`);
     await runGenerator('app', PRISTINE_APP_DIR,
