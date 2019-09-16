@@ -13,6 +13,10 @@ module.exports = function (generatorName) {
   let logFileName;
 
   function init() {
+
+    //check 'generated' dir - create if need
+    !fs.existsSync(GENERATED_DIR) && fs.mkdirSync(GENERATED_DIR);
+
     logFileName = path.join(LOG_DIR, generatorName.split(':')[0] + '.log');
     console.info(`init integration test '${generatorName}', logs will be available at`, logFileName);
 
