@@ -8,7 +8,7 @@ const EXPECT_DIR = 'test/e2e/expect';
 const GENERATED_DIR = 'test/e2e/generated';
 const LOG_DIR = `${GENERATED_DIR}/logs`;
 
-module.exports = function (generatorName) {
+module.exports = function (generatorName, logFileSuffix) {
 
   let logFileName;
 
@@ -17,7 +17,7 @@ module.exports = function (generatorName) {
     //check 'generated' dir - create if need
     !fs.existsSync(GENERATED_DIR) && fs.mkdirSync(GENERATED_DIR);
 
-    logFileName = path.join(LOG_DIR, generatorName.split(':')[0] + '.log');
+    logFileName = path.join(LOG_DIR, generatorName.split(':')[0] + `:${logFileSuffix}` + '.log');
     console.info(`init integration test '${generatorName}', logs will be available at`, logFileName);
 
     //create logs dir if not exist
@@ -99,10 +99,27 @@ module.exports = function (generatorName) {
       .trim();
   }
 
+
+  async function installAndBuild(suffix, appDir) {
+    const logCaption = `e2e:react-client:${suffix}:`;
+    console.log(`${logCaption} generation complete, start compilation`);
+
+    await cmd(`cd ${appDir} && npm install`,
+      `${logCaption} start compile react-client after generation  - npm install, path: ${fs.realpathSync(appDir)}`,
+      `${logCaption} start compile react-client after generation - npm install - DONE`);
+
+    await cmd(`cd ${appDir} && CI='true' npm run build`,
+      `${logCaption} start compile react-client after generation - npm run build, path: ${fs.realpathSync(appDir)}`,
+      `${logCaption} start compile react-client after generation - npm run build - DONE\n-------------\n\n`);
+
+    console.log(`${logCaption} react app generation test - PASSED`);
+  }
+
   return {
     runGenerator: runGenerator,
     assertContent: assertContent,
     cmd: cmd,
-    init: init
+    init: init,
+    installAndBuild: installAndBuild
   };
 };
