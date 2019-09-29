@@ -8,7 +8,7 @@ const modelPath = require.resolve('../../fixtures/mpg-projectModel.json');
 const rimraf = promisify(require('rimraf'));
 
 const SDK_DIR = `src/test/generated/sdk`;
-const SDK_ALL_DIR = path.join(process.cwd(), `${SDK_DIR}/all`);
+const SDK_ALL_DIR = `${SDK_DIR}/all`;
 const SDK_MODEL_DIR = path.join(process.cwd(), `${SDK_DIR}/model`);
 
 describe('sdk generator test', () => {
@@ -19,10 +19,10 @@ describe('sdk generator test', () => {
   });
 
   it('should generate sdk:all', function () {
-    return rimraf(`${SDK_ALL_DIR}/*`)
+    return rimraf(`${path.join(process.cwd(), SDK_ALL_DIR)}/*`)
       .then(() => generate('sdk', 'all', {
           model: modelPath,
-          dest: SDK_ALL_DIR,
+          dest: `${SDK_ALL_DIR}`, //do not use full path here to test BaseGenerator#_getDestRoot
           debug: true
         })
       )

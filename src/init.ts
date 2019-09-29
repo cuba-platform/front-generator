@@ -3,7 +3,7 @@ import * as YeomanEnvironment from "yeoman-environment";
 import * as path from "path";
 import {OptionsConfig} from "./common/cli-options";
 import {StudioTemplateProperty} from "./common/studio/studio-model";
-import {GeneratorExports} from "./common/generation";
+import {GeneratorExports} from "./common/base-generator";
 
 const GENERATORS_DIR_NAME = 'generators';
 const GENERATOR_FILE_NAME = 'index.js';
