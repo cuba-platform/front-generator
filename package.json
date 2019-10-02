@@ -20,7 +20,7 @@
     "test:e2e:react": "mocha 'test/e2e/react-client--*.test.js'  -g 'test:e2e:react' --timeout 0",
     "test:e2e:react:mpg": "mocha 'test/e2e/react-client--mpg.test.js'  -g 'test:e2e:react:mpg' --timeout 0",
     "test:e2e:react:empty-model": "mocha 'test/e2e/react-client--empty-model.test.js'  -g 'test:e2e:react:empty-model' --timeout 0",
-    "test:e2e:react:trusty-dragon": "mocha 'test/e2e/react-client--trusty-dragon.test.js'  -g 'test:e2e:react:trusty-dragon' --timeout 0",
+    "test:e2e:react:new-project": "mocha 'test/e2e/react-client--new-project.test.js'  -g 'test:e2e:react:new-project' --timeout 0",
 
     "test:e2e:polymer2": "mocha 'test/e2e/polymer2.test.js'  -g 'test:e2e:polymer2' --timeout 0",
     "test:e2e:polymer2-ts": "mocha 'test/e2e/polymer2-ts.test.js'  -g 'test:e2e:polymer2-ts' --timeout 0",

@@ -1,7 +1,7 @@
 {
   "project": {
-    "name": "trusty-dragon",
-    "namespace": "trustydragon",
+    "name": "new-project",
+    "namespace": "newproject",
     "modulePrefix": "app",
     "modelPrefix": "app"
   },
