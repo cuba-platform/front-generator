@@ -1,6 +1,6 @@
 import * as React from "react";
 import {observer} from "mobx-react";
-import {Card, Icon, Modal} from "antd";
+import {Card, List, Icon, Modal} from "antd";
 import {<%=entity.className%>} from "<%= relDirShift %>cuba/entities/<%=entity.name%>";
 import {Link} from "react-router-dom";
 import {collection, EntityProperty} from "@cuba-platform/react";
