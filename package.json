@@ -74,7 +74,7 @@
     "statements": 75,
     "branches": 70,
     "functions": 80,
-    "lines": 85
+    "lines": 84
   },
   "author": "CUBA Platform Team <info@cuba-platform.com>",
   "license": "Apache-2.0"
