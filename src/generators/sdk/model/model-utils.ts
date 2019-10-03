@@ -27,3 +27,4 @@ export function collectModelContext(projectModel: ProjectModel) {
   baseProjectEntities.forEach(addEntityToMap(entitiesMap, true));
   return {entitiesMap, enumsMap}
 }
+
