@@ -71,7 +71,10 @@
       "html"
     ],
     "check-coverage": true,
-    "lines": 80
+    "stmts": 84,
+    "branch": 71,
+    "funcs": 81,
+    "lines": 84
   },
   "author": "CUBA Platform Team <info@cuba-platform.com>",
   "license": "Apache-2.0"
