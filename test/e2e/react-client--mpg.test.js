@@ -2,7 +2,7 @@ const path = require('path');
 const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
 const {runGenerator, assertContent, init, installAndBuild} = require('./e2e-common')('react-typescript', 'mpg');
-const answers = require('./fixtures/answers.json');
+const answers = require('./fixtures/react-client/answers.json');
 
 const MPG_APP_DIR = 'test/e2e/generated/react-client-mpg';
 
@@ -21,6 +21,7 @@ describe('test:e2e:react:mpg', () => {
     assertContent('enums/enums.ts', srcCubaDir);
     assertContent('entities/mpg$Car.ts', srcCubaDir);
     assertContent('entities/mpg$SparePart.ts', srcCubaDir);
+    assertContent('entities/MpgUserInfo.ts', srcCubaDir);
     assertContent('services.ts', srcCubaDir);
     assertContent('queries.ts', srcCubaDir);
 

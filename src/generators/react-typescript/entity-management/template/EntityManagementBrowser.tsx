@@ -2,12 +2,11 @@ import * as React from "react";<% if (listType === 'table') { %>
 import {observable} from 'mobx';<% } %>
 import {observer} from "mobx-react";
 import {
-  Modal,<% if (listType === 'table') { %>
-  Button,<% } else if (listType === 'cards') { %>
+  Modal, Button,<% if (listType === 'cards') { %>
   Card, Icon, Spin,<% } else if (listType === 'list') { %>
   List, Icon, Spin,<% } %>
 } from "antd";
-import {<%=entity.className%>} from "<%= relDirShift %>cuba/entities/<%=entity.name%>";
+import {<%=entity.className%>} from "<%= relDirShift %><%=entity.path%>";
 import {Link} from "react-router-dom";
 import {
   collection,<% if (listType === 'table') { %>
@@ -19,8 +18,8 @@ import {<%=className%>} from "./<%=className%>";
 <% if (listType === 'table') { %>
 @injectMainStore<% } %>
 @observer<% if (listType === 'table') { %>
-export class <%=className%>Browser extends React.Component<MainStoreInjected> {<% } else { %>
-export class <%=className%>Browser extends React.Component {<% } %>
+export class <%=listComponentName%> extends React.Component<MainStoreInjected> {<% } else { %>
+export class <%=listComponentName%> extends React.Component {<% } %>
 
   dataCollection = collection<<%=entity.className%>>(<%=entity.className%>.NAME, {view: '<%=listView.name%>', sort: '-updateTs'});
   fields = [<%listView.allProperties.forEach(p => {%>'<%=p.name%>',<%})%>];
@@ -45,7 +44,8 @@ export class <%=className%>Browser extends React.Component {<% } %>
         (<Link to={<%=className%>.PATH + '/' + <%=className%>.NEW_SUBPATH} key='create'>
           <Button htmlType='button'
                   style={{margin: '0 12px 12px 0'}}
-                  type='default'>
+                  type='primary'
+                  icon="plus">
             Create
           </Button>
         </Link>),
@@ -110,14 +110,16 @@ export class <%=className%>Browser extends React.Component {<% } %>
     }
 
     return (
-      <div>
-        <div style={{marginBottom: '12px', textAlign: 'right'}}>
+      <div <% if (listType !== 'table') {%>className='page-layout-narrow'<%}%>>
+        <div style={{marginBottom: '12px'}}>
           <Link to={<%=className%>.PATH + '/' + <%=className%>.NEW_SUBPATH}>
-            <Icon type='plus-circle' style={{fontSize: '24px'}}/>
+            <Button htmlType='button'
+                    type='primary'
+                    icon="plus">
+                    Create
+            </Button>
           </Link>
         </div>
-        {items == null || items.length === 0 ?
-          <p>No items available</p> : null}
         <% if (listType === 'list') { %>
          <List itemLayout="horizontal"
             bordered
@@ -142,6 +144,8 @@ export class <%=className%>Browser extends React.Component {<% } %>
               </List.Item>
             }/>
         <% } else { %>
+        {items == null || items.length === 0 ?
+            <p>No data</p> : null}
         {items.map(e =>
           <Card title={e._instanceName}
                 key={e.id}

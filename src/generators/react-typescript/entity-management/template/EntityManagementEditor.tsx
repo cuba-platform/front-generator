@@ -6,8 +6,10 @@ import {<%=className%>} from "./<%=className%>";
 import {FormComponentProps} from "antd/lib/form";
 import {Link, Redirect} from "react-router-dom";
 import {IReactionDisposer, observable, reaction} from "mobx";
-import {FormField, instance, Msg} from "@cuba-platform/react";
-import {<%=entity.className%>} from "<%= relDirShift %>cuba/entities/<%=entity.name%>";
+import {<%if (Object.keys(editRelations).length > 0) {%>collection, <%}%>FormField, instance, Msg} from "@cuba-platform/react";
+import {<%=entity.className%>} from "<%= relDirShift %><%=entity.path%>";
+<%Object.values(editRelations).forEach(entity => {%>import {<%=entity.className%>} from "<%= relDirShift %><%=entity.path%>";
+<%})%>
 
 type Props = FormComponentProps & {
   entityId: string;
@@ -15,9 +17,11 @@ type Props = FormComponentProps & {
 
 
 @observer
-class <%=className%>Editor extends React.Component<Props> {
+class <%=editComponentName%> extends React.Component<Props> {
 
   dataInstance = instance<<%=entity.className%>>(<%=entity.className%>.NAME, {view: '<%=editView.name%>', loadImmediately: false});
+  <%Object.entries(editRelations).forEach(([attrName, entity]) => {%><%=attrName%>sDc = collection<<%=entity.className%>>(<%=entity.className%>.NAME, {view: '_minimal'});
+  <%})%>
   @observable
   updated = false;
   reactionDisposer: IReactionDisposer;
@@ -26,14 +30,20 @@ class <%=className%>Editor extends React.Component<Props> {
 
   handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    this.dataInstance.update(this.props.form.getFieldsValue(this.fields))
-      .then(() => {
-        message.success('Entity has been updated');
-        this.updated = true;
-      })
-      .catch(() => {
-        alert('Error')
-      });
+    this.props.form.validateFields((err, values) => {
+      if (err) {
+        message.warn('Validation Error. Please check the data you entered.');
+        return;
+      }
+      this.dataInstance.update(this.props.form.getFieldsValue(this.fields))
+        .then(() => {
+          message.success('Entity has been updated');
+          this.updated = true;
+        })
+        .catch(() => {
+          alert('Error')
+        });
+    });
   };
 
   render() {
@@ -46,16 +56,18 @@ class <%=className%>Editor extends React.Component<Props> {
     const {status} = this.dataInstance;
 
     return (
-      <Card style={{margin:"0 auto", maxWidth: "1024px"}}>
+      <Card className='page-layout-narrow'>
         <Form onSubmit={this.handleSubmit}
               layout='vertical'>
           <%editAttributes.forEach(attr => {%>
           <Form.Item label={<Msg entityName={<%=entity.className%>.NAME} propertyName='<%=attr.name%>'/>}
                     key='<%=attr.name%>'
                     style={{marginBottom: '12px'}}>{
-              getFieldDecorator('<%=attr.name%>'<%if (attr.mandatory) {%>, {rules:[{required: true}]}<%}%>)(
+              getFieldDecorator('<%=attr.name%>', {<%if (attr.mandatory) {%>rules:[{required: true}],<%}%><%if (attr.type && attr.type.fqn === 'java.lang.Boolean') {%>valuePropName:"checked"<%}%>})(
                 <FormField entityName={<%=entity.className%>.NAME}
-                          propertyName='<%=attr.name%>'/>
+                          propertyName='<%=attr.name%>'<%if (Object.keys(editRelations).includes(attr.name)) {%>
+                          optionsContainer={this.<%=attr.name%>sDc}
+                          <%}%>/>
               )}
           </Form.Item>
           <%})%>
@@ -100,4 +112,4 @@ class <%=className%>Editor extends React.Component<Props> {
 
 }
 
-export default Form.create<Props>()(<%=className%>Editor);
+export default Form.create<Props>()(<%=editComponentName%>);
