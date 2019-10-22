@@ -72,10 +72,10 @@
       "html"
     ],
     "check-coverage": true,
-    "statements": 75,
-    "branches": 70,
-    "functions": 80,
-    "lines": 84
+    "statements": 72,
+    "branches": 62,
+    "functions": 75,
+    "lines": 78
   },
   "author": "CUBA Platform Team <info@cuba-platform.com>",
   "license": "Apache-2.0"
