@@ -6,6 +6,7 @@ import {generateEntities} from "./model/entities-generation";
 import {generateServices} from "./services/services-generation";
 import {generateQueries} from "./services/queries-generation";
 import {collectModelContext} from "./model/model-utils";
+import {createFormatStream} from '../../common/utils';
 
 interface Answers {
   projectInfo: StudioProjectInfo;
@@ -27,6 +28,7 @@ class SdkGenerator extends BaseGenerator<Answers, {}, CommonGenerationOptions> {
   constructor(args: string | string[], options: CommonGenerationOptions, runMode: RunMode) {
     super(args, options);
     this.runMode = runMode;
+    this.registerTransformStream(createFormatStream());
     this.sourceRoot(path.join(__dirname, 'template'));
   }
 
