@@ -74,7 +74,7 @@
       "html"
     ],
     "check-coverage": true,
-    "statements": 78,
+    "statements": 72,
     "branches": 62,
     "functions": 75,
     "lines": 78
