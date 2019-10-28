@@ -29,6 +29,7 @@
     "url": "https://github.com/cuba-platform/front-generator"
   },
   "dependencies": {
+    "@types/prettier": "^1.18.3",
     "commander": "~2.13.0",
     "inquirer-autocomplete-prompt": "^1.0.1",
     "prettier": "1.18.2",
