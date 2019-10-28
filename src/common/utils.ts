@@ -1,7 +1,5 @@
 import * as path from "path";
 import {Entity} from "./model/cuba-model";
-import {readdir} from 'fs';
-import {promisify} from "util";
 
 /**
  * @param {string} elementName my-app-custom
@@ -46,22 +44,5 @@ export function getEntityModulePath(entity: Entity, prefix: string = ''): string
   return path.posix.join(prefix, modulePath);
 }
 
-/**
- * Recursively walk through all files in dir and execute modifier on each
- *
- * @param dir - directory walk through
- * @param modifier - function to applied to each file
- */
-export async function withAllFiles(dir: string, modifier: Function) {
-  const entries = await promisify(readdir)(dir, { withFileTypes: true });
-  entries.map((entry) => {
-    const res = path.resolve(dir, entry.name);
-    if (entry.isDirectory()) {
-      return withAllFiles(res, modifier);
-    } else {
-      return modifier(res);
-    }
-  });
-}
 
 
