@@ -2,8 +2,6 @@ import * as path from "path";
 import {Entity} from "./model/cuba-model";
 import {readdir} from 'fs';
 import {promisify} from "util";
-import through2 = require('through2');
-import prettier = require('prettier');
 
 /**
  * @param {string} elementName my-app-custom
@@ -66,12 +64,4 @@ export async function withAllFiles(dir: string, modifier: Function) {
   });
 }
 
-export function createFormatStream() {
-  return through2.obj(function (file, enc, callback) {
-    const contents = Buffer.from(file.contents).toString('utf8');
-    file.contents = new Buffer(prettier.format(contents, {parser: "typescript"}));
-    this.push(file);
-    callback();
-  });
-}
 

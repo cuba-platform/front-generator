@@ -115,11 +115,18 @@ module.exports = function (generatorName, logFileSuffix) {
     console.log(`${logCaption} react app generation test - PASSED`);
   }
 
+  async function checkFormat(appDir) {
+    await cmd(`./node_modules/.bin/prettier --check "${appDir}"/**/*.ts`,
+      `${generatorName}:${logFileSuffix}: start check formatting using prettier, path: ${fs.realpathSync(appDir)}`,
+      `${generatorName}:${logFileSuffix}: check formatting - DONE`);
+  }
+
   return {
     runGenerator: runGenerator,
     assertContent: assertContent,
     cmd: cmd,
     init: init,
-    installAndBuild: installAndBuild
+    installAndBuild: installAndBuild,
+    checkFormat: checkFormat
   };
 };
