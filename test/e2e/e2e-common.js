@@ -4,9 +4,9 @@ const {promisify} = require('util');
 const exec = promisify(require('child_process').exec);
 const fs = require('fs');
 
-const EXPECT_DIR = 'test/e2e/expect';
-const GENERATED_DIR = 'test/e2e/generated';
-const LOG_DIR = `${GENERATED_DIR}/logs`;
+const EXPECT_DIR = path.join('test', 'e2e', 'expect');
+const GENERATED_DIR = path.join('test', 'e2e', 'generated');
+const LOG_DIR = path.join(GENERATED_DIR, 'logs');
 
 module.exports = function (generatorName, logFileSuffix) {
 
@@ -116,8 +116,12 @@ module.exports = function (generatorName, logFileSuffix) {
   }
 
   async function checkFormat(appDir) {
-    await cmd(`./node_modules/.bin/prettier --check "${appDir}"/**/*.ts`,
-      `${generatorName}:${logFileSuffix}: start check formatting using prettier, path: ${fs.realpathSync(appDir)}`,
+
+    const prettierPath = path.join('node_modules', '.bin', 'prettier');
+    const prettierPattern = path.join(appDir, '**', '*.ts');
+
+    await cmd(`${prettierPath} --check "${prettierPattern}"`,
+      `${generatorName}:${logFileSuffix}: start check formatting using prettier, pattern: ${prettierPattern}`,
       `${generatorName}:${logFileSuffix}: check formatting - DONE`);
   }
 
