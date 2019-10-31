@@ -67,7 +67,7 @@
       "src/test/**",
       "src/generators/polymer2/**",
       "src/generators/polymer2-typescript/**",
-      "src/generators/app/template/**"
+      "src/generators/*/*/template/**"
     ],
     "reporter": [
       "text",
