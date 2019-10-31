@@ -31,17 +31,18 @@ class ReactEntityManagementGenerator extends BaseGenerator<EntityManagementAnswe
     this.model = answersToManagementModel(this.answers, this.cubaProjectModel!, this.options.dirShift);
     const {className, listComponentName, editComponentName} = this.model;
 
+    const extension = '.tsx.ejs';
     this.fs.copyTpl(
-      this.templatePath('EntityManagement.tsx'),
-      this.destinationPath(className + '.tsx'), this.model
+      this.templatePath('EntityManagement' + extension),
+      this.destinationPath(className + extension), this.model
     );
     this.fs.copyTpl(
-      this.templatePath('EntityManagementBrowser.tsx'),
-      this.destinationPath(listComponentName + '.tsx'), this.model
+      this.templatePath('EntityManagementBrowser' + extension),
+      this.destinationPath(listComponentName + extension), this.model
     );
     this.fs.copyTpl(
-      this.templatePath('EntityManagementEditor.tsx'),
-      this.destinationPath(editComponentName + '.tsx'), this.model
+      this.templatePath('EntityManagementEditor' + extension),
+      this.destinationPath(editComponentName + extension), this.model
     );
 
     if (!addToMenu(this.fs, {
