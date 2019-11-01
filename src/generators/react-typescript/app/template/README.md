@@ -287,6 +287,100 @@ if by the '-' character then descending. If there is no special character before
 It shall be used instead of redefining `columns` in `tableProps` if the goal is to extend rather that fully replace the existing
 custom column-related functionality.
 
+Alternatively it is possible to create a vanilla antd `Table` and customize some of its columns
+with `DataTable`'s custom filters using helper functions. 
+In the following example we will create a `Table` with two simple columns and one using our custom filtering.
+
+```typescript jsx
+import * as React from "react";
+import {action, observable} from 'mobx';
+import {observer} from "mobx-react";
+import {Table,} from "antd";
+import {Car} from "../../cuba/entities/mpg$Car";
+import {
+  collection, injectMainStore, MainStoreInjected,
+  generateColumnWithCustomFilter, ComparisonType, handleTableChange,
+} from "@cuba-platform/react";
+import {injectIntl, WrappedComponentProps} from 'react-intl';
+import {PaginationConfig} from 'antd/es/pagination';
+import { SorterResult } from "antd/es/table";
+
+@injectMainStore
+@observer
+class CarTableComponent extends React.Component<MainStoreInjected & WrappedComponentProps> {
+
+  dataCollection = collection<Car>(Car.NAME, {view: 'car-edit', sort: '-updateTs'});
+
+  fields = ['purchaseDate','price','regNumber'];
+
+  @observable.ref filters: Record<string, string[]> | undefined;
+  @observable operator: ComparisonType | undefined;
+  @observable value: any;
+
+  @action
+  handleOperatorChange = (operator: ComparisonType) => this.operator = operator;
+
+  @action
+  handleValueChange = (value: any) => this.value = value;
+
+  @action
+  handleChange = (pagination: PaginationConfig, tableFilters: Record<string, string[]>, sorter: SorterResult<Car>): void => {
+    this.filters = tableFilters;
+
+    handleTableChange({
+      pagination: pagination,
+      filters: tableFilters,
+      sorter: sorter,
+      defaultSort: '-updateTs',
+      fields: this.fields,
+      mainStore: this.props.mainStore!,
+      dataCollection: this.dataCollection
+    });
+
+    this.dataCollection.load();
+  };
+
+
+  render() {
+
+    return (
+      <Table
+        dataSource={this.dataCollection.items.slice()}
+        columns={[
+          { title: 'Purchase Date', dataIndex: 'purchaseDate', key: 'purchaseDate', render: (text: any) => <b>{text}</b> },
+          { title: 'Price', dataIndex: 'price', key: 'price' },
+          generateColumnWithCustomFilter({
+            propertyName: 'regNumber',
+            entityName: this.dataCollection.entityName,
+            filters: this.filters,
+            operator: this.operator,
+            onOperatorChange: this.handleOperatorChange,
+            value: this.value,
+            onValueChange: this.handleValueChange,
+            enableSorter: true,
+            mainStore: this.props.mainStore!
+          })
+        ]}
+        onChange={this.handleChange}
+        pagination={{
+          showSizeChanger: true,
+          total: this.dataCollection.count,
+        }}
+      />
+    );
+  }
+
+}
+
+const CarTable = injectIntl(CarTableComponent);
+
+export default CarTable;
+```
+
+This is the result:
+
+![Cannot find image](https://raw.githubusercontent.com/cuba-platform/front-generator/master/etc/react/custom-table-example.png)
+
 ### Routing
 
 Routing is based on well-known [React Router](https://reacttraining.com/react-router/web/guides/quick-start) library.
