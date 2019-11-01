@@ -1,0 +1,121 @@
+import * as React from "react";
+import {FormEvent} from "react";
+import {Button, Card, Form, message} from "antd";
+import {observer} from "mobx-react";
+import {<%=className%>} from "./<%=className%>";
+import {FormComponentProps} from "antd/lib/form";
+import {Link, Redirect} from "react-router-dom";
+import {IReactionDisposer, observable, reaction} from "mobx";
+import {FormattedMessage, injectIntl, WrappedComponentProps} from 'react-intl';
+import {<%if (Object.keys(editRelations).length > 0) {%>collection, <%}%>FormField, instance, Msg, withLocalizedForm} from "@cuba-platform/react";
+  import "<%= relDirShift %>app/App.css";
+  import {<%=entity.className%>} from "<%= relDirShift %><%=entity.path%>";
+    <%Object.values(editRelations).forEach(entity => {%>import {<%=entity.className%>} from "<%= relDirShift %><%=entity.path%>";
+    <%})%>
+
+    type Props = FormComponentProps & EditorProps;
+
+    type EditorProps = {
+    entityId: string;
+  };
+
+
+    @observer
+    class <%=editComponentName%>Component extends React.Component<Props & WrappedComponentProps> {
+
+      dataInstance = instance<<%=entity.className%>>(<%=entity.className%>.NAME, {view: '<%=editView.name%>', loadImmediately: false});
+      <%Object.entries(editRelations).forEach(([attrName, entity]) => {%><%=attrName%>sDc = collection<<%=entity.className%>>(<%=entity.className%>.NAME, {view: '_minimal'});
+      <%})%>
+      @observable
+      updated = false;
+      reactionDisposer: IReactionDisposer;
+
+      fields = [<%editView.allProperties.forEach(p => {%>'<%=p.name%>',<%})%>];
+
+        handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        this.props.form.validateFields((err, values) => {
+        if (err) {
+        message.warn(this.props.intl.formatMessage({id: 'management.editor.validationError'}));
+        return;
+        }
+        this.dataInstance.update(this.props.form.getFieldsValue(this.fields))
+        .then(() => {
+        message.success(this.props.intl.formatMessage({id: 'management.editor.success'}));
+        this.updated = true;
+        })
+        .catch(() => {
+        alert(this.props.intl.formatMessage({id: 'management.editor.error'}));
+        });
+        });
+        };
+
+        render() {
+
+        if (this.updated) {
+        return <Redirect to={<%=className%>.PATH}/>
+        }
+
+        const {getFieldDecorator} = this.props.form;
+        const {status} = this.dataInstance;
+
+        return (
+        <Card className='page-layout-narrow'>
+        <Form onSubmit={this.handleSubmit}
+        layout='vertical'>
+        <%editAttributes.forEach(attr => {%>
+        <Form.Item label={<Msg entityName={<%=entity.className%>.NAME} propertyName='<%=attr.name%>'/>}
+        key='<%=attr.name%>'
+        style={{marginBottom: '12px'}}>{
+          getFieldDecorator('<%=attr.name%>', {<%if (attr.mandatory) {%>rules:[{required: true}],<%}%><%if (attr.type && attr.type.fqn === 'java.lang.Boolean') {%>valuePropName:"checked"<%}%>})(
+        <FormField entityName={<%=entity.className%>.NAME}
+          propertyName='<%=attr.name%>'<%if (Object.keys(editRelations).includes(attr.name)) {%>
+          optionsContainer={this.<%=attr.name%>sDc}
+            <%}%>/>
+          )}
+        </Form.Item>
+        <%})%>
+        <Form.Item style={{textAlign: 'center'}}>
+        <Link to={<%=className%>.PATH}>
+        <Button htmlType="button">
+        <FormattedMessage id='management.editor.cancel'/>
+        </Button>
+        </Link>
+        <Button type="primary"
+        htmlType="submit"
+        disabled={status !== "DONE" && status !== "ERROR"}
+        loading={status === "LOADING"}
+        style={{marginLeft: '8px'}}>
+        <FormattedMessage id='management.editor.submit'/>
+        </Button>
+        </Form.Item>
+        </Form>
+        </Card>
+        );
+      }
+
+        componentDidMount() {
+        if (this.props.entityId !== <%=className%>.NEW_SUBPATH) {
+        this.dataInstance.load(this.props.entityId);
+        } else {
+          this.dataInstance.setItem(new <%=entity.className%>());
+          }
+          this.reactionDisposer = reaction(
+          () => {
+          return this.dataInstance.item
+          },
+          () => {
+          this.props.form.setFieldsValue(this.dataInstance.getFieldValues(this.fields));
+          }
+          )
+          }
+
+          componentWillUnmount() {
+          this.reactionDisposer();
+          }
+
+          }
+
+          export default (
+          injectIntl(withLocalizedForm<EditorProps>(<%=editComponentName%>Component))
+          );
