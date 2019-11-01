@@ -9,6 +9,9 @@ import {addToMenu} from "../common/menu";
 import {EntityAttribute, MappingType, ProjectModel} from "../../../common/model/cuba-model";
 import {collectAttributesFromHierarchy, findEntity, isToOneAttribute} from "../../../common/model/cuba-model-utils";
 import {EntityTemplateModel, getEntityPath} from "../common/template-model";
+import * as entityManagementEn from "./entity-management-en.json";
+import * as entityManagementRu from "./entity-management-ru.json";
+import { writeI18nMessages } from "../common/i18n";
 
 class ReactEntityManagementGenerator extends BaseGenerator<EntityManagementAnswers, EntityManagementTemplateModel, PolymerElementOptions> {
 
@@ -44,6 +47,8 @@ class ReactEntityManagementGenerator extends BaseGenerator<EntityManagementAnswe
       this.templatePath('EntityManagementEditor' + extension),
       this.destinationPath(editComponentName + extension), this.model
     );
+
+    writeI18nMessages(this.fs, className, this.options.dirShift, entityManagementEn, entityManagementRu);
 
     if (!addToMenu(this.fs, {
       componentFileName: className,
