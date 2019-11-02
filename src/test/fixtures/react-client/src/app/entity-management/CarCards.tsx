@@ -3,12 +3,25 @@ import { observer } from "mobx-react";
 import { Modal, Button, Card, Icon, Spin } from "antd";
 import { Car } from "cuba/entities/mpg$Car";
 import { Link } from "react-router-dom";
-import { collection, EntityProperty } from "@cuba-platform/react";
+import {
+  collection,
+  injectMainStore,
+  MainStoreInjected,
+  EntityProperty
+} from "@cuba-platform/react";
 import { SerializedEntity } from "@cuba-platform/rest";
 import { CarManagement } from "./CarManagement";
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps
+} from "react-intl";
 
+@injectMainStore
 @observer
-export class CarCards extends React.Component {
+class CarCardsComponent extends React.Component<
+  MainStoreInjected & WrappedComponentProps
+> {
   dataCollection = collection<Car>(Car.NAME, {
     view: "car-edit",
     sort: "-updateTs"
@@ -32,9 +45,16 @@ export class CarCards extends React.Component {
 
   showDeletionDialog = (e: SerializedEntity<Car>) => {
     Modal.confirm({
-      title: `Are you sure you want to delete ${e._instanceName}?`,
-      okText: "Delete",
-      cancelText: "Cancel",
+      title: this.props.intl.formatMessage(
+        { id: "management.browser.delete.areYouSure" },
+        { instanceName: e._instanceName }
+      ),
+      okText: this.props.intl.formatMessage({
+        id: "management.browser.delete.ok"
+      }),
+      cancelText: this.props.intl.formatMessage({
+        id: "management.browser.delete.cancel"
+      }),
       onOk: () => {
         return this.dataCollection.delete(e);
       }
@@ -64,12 +84,18 @@ export class CarCards extends React.Component {
         <div style={{ marginBottom: "12px" }}>
           <Link to={CarManagement.PATH + "/" + CarManagement.NEW_SUBPATH}>
             <Button htmlType="button" type="primary" icon="plus">
-              Create
+              <span>
+                <FormattedMessage id="management.browser.create" />
+              </span>
             </Button>
           </Link>
         </div>
 
-        {items == null || items.length === 0 ? <p>No data</p> : null}
+        {items == null || items.length === 0 ? (
+          <p>
+            <FormattedMessage id="management.browser.noItems" />
+          </p>
+        ) : null}
         {items.map(e => (
           <Card
             title={e._instanceName}
@@ -100,3 +126,7 @@ export class CarCards extends React.Component {
     );
   }
 }
+
+const CarCards = injectIntl(CarCardsComponent);
+
+export default CarCards;

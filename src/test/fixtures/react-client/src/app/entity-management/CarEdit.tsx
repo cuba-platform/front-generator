@@ -6,18 +6,32 @@ import { CarManagement } from "./CarManagement";
 import { FormComponentProps } from "antd/lib/form";
 import { Link, Redirect } from "react-router-dom";
 import { IReactionDisposer, observable, reaction } from "mobx";
-import { collection, FormField, instance, Msg } from "@cuba-platform/react";
+import {
+  FormattedMessage,
+  injectIntl,
+  WrappedComponentProps
+} from "react-intl";
+import {
+  collection,
+  FormField,
+  instance,
+  Msg,
+  withLocalizedForm
+} from "@cuba-platform/react";
+import "app/App.css";
 import { Car } from "cuba/entities/mpg$Car";
 import { Garage } from "cuba/entities/mpg$Garage";
 import { TechnicalCertificate } from "cuba/entities/mpg$TechnicalCertificate";
 import { FileDescriptor } from "cuba/entities/base/sys$FileDescriptor";
 
-type Props = FormComponentProps & {
+type Props = FormComponentProps & EditorProps;
+
+type EditorProps = {
   entityId: string;
 };
 
 @observer
-class CarEdit extends React.Component<Props> {
+class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
   dataInstance = instance<Car>(Car.NAME, {
     view: "car-edit",
     loadImmediately: false
@@ -56,17 +70,25 @@ class CarEdit extends React.Component<Props> {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) {
-        message.warn("Validation Error. Please check the data you entered.");
+        message.warn(
+          this.props.intl.formatMessage({
+            id: "management.editor.validationError"
+          })
+        );
         return;
       }
       this.dataInstance
         .update(this.props.form.getFieldsValue(this.fields))
         .then(() => {
-          message.success("Entity has been updated");
+          message.success(
+            this.props.intl.formatMessage({ id: "management.editor.success" })
+          );
           this.updated = true;
         })
         .catch(() => {
-          alert("Error");
+          alert(
+            this.props.intl.formatMessage({ id: "management.editor.error" })
+          );
         });
     });
   };
@@ -238,7 +260,9 @@ class CarEdit extends React.Component<Props> {
 
           <Form.Item style={{ textAlign: "center" }}>
             <Link to={CarManagement.PATH}>
-              <Button htmlType="button">Cancel</Button>
+              <Button htmlType="button">
+                <FormattedMessage id="management.editor.cancel" />
+              </Button>
             </Link>
             <Button
               type="primary"
@@ -247,7 +271,7 @@ class CarEdit extends React.Component<Props> {
               loading={status === "LOADING"}
               style={{ marginLeft: "8px" }}
             >
-              Submit
+              <FormattedMessage id="management.editor.submit" />
             </Button>
           </Form.Item>
         </Form>
@@ -278,4 +302,4 @@ class CarEdit extends React.Component<Props> {
   }
 }
 
-export default Form.create<Props>()(CarEdit);
+export default injectIntl(withLocalizedForm<EditorProps>(CarEditComponent));
