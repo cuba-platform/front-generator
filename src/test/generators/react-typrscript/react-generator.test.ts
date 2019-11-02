@@ -23,27 +23,18 @@ describe('react generator test', () => {
 
     await rimraf(`${REACT_DIR}/*`);
 
-    await generate('react-typescript', 'app', {
-          model: modelPath,
-          dest: REACT_DIR,
-          debug: true
-        });
-
-      assert.ok(fs.existsSync(`entities/base`));
-      assert.ok(fs.existsSync(`enums/enums.ts`));
-      assertFiles('src/index.tsx');
+    await generate('react-typescript', 'app', opts(REACT_DIR, null));
+    assert.ok(fs.existsSync(`entities/base`));
+    assert.ok(fs.existsSync(`enums/enums.ts`));
+    assertFiles('src/index.tsx');
   });
 
   it('should generate React client blank-component', async function () {
 
     await rimraf(`${COMPONENT_DIR}/*`);
 
-    await generate('react-typescript', 'blank-component', {
-      model: modelPath,
-      dest: COMPONENT_DIR,
-      debug: true,
-      answers: Buffer.from(JSON.stringify(answers.blankComponent)).toString('base64')
-    });
+    await generate('react-typescript', 'blank-component',
+      opts(COMPONENT_DIR, answers.blankComponent));
 
     assertFiles('src/app/component/BlankComponent.tsx');
   });
@@ -52,12 +43,8 @@ describe('react generator test', () => {
 
     await rimraf(`${CARDS_DIR}/*`);
 
-    await generate('react-typescript', 'entity-cards', {
-      model: modelPath,
-      dest: CARDS_DIR,
-      debug: true,
-      answers: Buffer.from(JSON.stringify(answers.entityCards)).toString('base64')
-    });
+    await generate('react-typescript', 'entity-cards',
+      opts(CARDS_DIR, answers.entityCards));
 
     assertFiles('src/app/entity-cards/MpgFavoriteCarCards.tsx');
   });
