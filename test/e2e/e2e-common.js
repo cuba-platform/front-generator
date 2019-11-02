@@ -93,15 +93,15 @@ module.exports = function (generatorName, logFileSuffix) {
     console.log(`${logCaption} generation complete, start compilation`);
 
     await cmd(`cd ${appDir} && npm install`,
-      `${logCaption} start compile react-client after generation  - npm install, path: ${fs.realpathSync(appDir)}`,
-      `${logCaption} start compile react-client after generation - npm install - DONE`);
+      `${logCaption} start install packages for react-client after generation  - npm install, path: ${fs.realpathSync(appDir)}`,
+      `${logCaption} install packages for react-client - DONE`);
 
-    const buildCommand = (process.platform === 'linux' ? 'CI=true ' : '') + 'npm run build';  //CI env var not needed on win
+    const buildCommand = addEnvVars('npm run build');
     await cmd(`cd ${appDir} && ${buildCommand}`,
       `${logCaption} start compile react-client after generation - '${buildCommand}', path: ${fs.realpathSync(appDir)}`,
-      `${logCaption} start compile react-client after generation - DONE\n-------------\n\n`);
+      `${logCaption} compile react-client after generation - DONE`);
 
-    console.log(`${logCaption} react app generation test - PASSED`);
+    console.log(`${logCaption} compilation - PASSED`);
   }
 
   async function checkFormat(appDir) {
@@ -114,12 +114,30 @@ module.exports = function (generatorName, logFileSuffix) {
       `${generatorName}:${logFileSuffix}: check formatting - DONE`);
   }
 
+  async function runTests(appDir) {
+    const logCaption = `${generatorName}:${logFileSuffix}`;
+    console.log(`${logCaption} going to run test`);
+
+    const testCommand = addEnvVars('npm test');
+    await cmd(`cd ${appDir} && ${testCommand}`,
+      `${logCaption} going to run test - '${testCommand}', path: ${fs.realpathSync(appDir)}`,
+      `${logCaption} run unit tests - DONE`);
+
+    console.log(`${logCaption} run unit tests - PASSED`);
+  }
+
+  //todo make cross-platform
+  function addEnvVars(cmd) { //CI env var not needed on win
+    return (process.platform === 'linux' ? 'CI=true ' : '') + cmd;
+  }
+
   return {
     runGenerator: runGenerator,
     assertContent: assertContent,
     cmd: cmd,
     init: init,
     installAndBuild: installAndBuild,
-    checkFormat: checkFormat
+    checkFormat: checkFormat,
+    runTests: runTests
   };
 };
