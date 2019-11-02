@@ -66,19 +66,30 @@ describe('react generator test', () => {
 
     await rimraf(`${EM_DIR}/*`);
 
-    await generate('react-typescript', 'entity-management', {
-      model: modelPath,
-      dest: EM_DIR,
-      debug: true,
-      answers: Buffer.from(JSON.stringify(answers.entityManagement)).toString('base64')
-    });
+    await generate('react-typescript', 'entity-management',
+      opts(EM_DIR, answers.entityManagement));
+    await generate('react-typescript', 'entity-management',
+      opts(EM_DIR, answers.entityManagement2));
+    await generate('react-typescript', 'entity-management',
+      opts(EM_DIR, answers.entityManagement3));
 
     assertFiles('src/app/entity-management/CarCards.tsx');
     assertFiles('src/app/entity-management/CarEdit.tsx');
+    assertFiles('src/app/entity-management/CarList.tsx');
+    assertFiles('src/app/entity-management/CarTable.tsx');
     assertFiles('src/app/entity-management/CarManagement.tsx');
   });
 
 });
+
+function opts(dir: string, answers: any) {
+  return {
+    model: modelPath,
+    dest: dir,
+    debug: true,
+    answers: Buffer.from(JSON.stringify(answers)).toString('base64')
+  }
+}
 
 function assertFiles(filePath: string) {
   const actual = fs.readFileSync(path.join(REACT_DIR, filePath), 'utf8');

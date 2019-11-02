@@ -19,6 +19,40 @@
     },
     "managementComponentName": "CarManagement"
   },
+  "entityManagement2": {
+    "editView": {
+      "name": "car-edit",
+      "entityName": "mpg$Car"
+    },
+    "editComponentName": "CarEdit2",
+    "listView": {
+      "name": "car-edit",
+      "entityName": "mpg$Car"
+    },
+    "listComponentName": "CarList",
+    "listType": "list",
+    "entity": {
+      "name": "mpg$Car"
+    },
+    "managementComponentName": "CarManagement2"
+  },
+  "entityManagement3": {
+    "editView": {
+      "name": "car-edit",
+      "entityName": "mpg$Car"
+    },
+    "editComponentName": "CarEdit3",
+    "listView": {
+      "name": "car-edit",
+      "entityName": "mpg$Car"
+    },
+    "listComponentName": "CarTable",
+    "listType": "table",
+    "entity": {
+      "name": "mpg$Car"
+    },
+    "managementComponentName": "CarManagement3"
+  },
   "entityCards": {
     "entityView": {
       "name": "favoriteCar-view",
