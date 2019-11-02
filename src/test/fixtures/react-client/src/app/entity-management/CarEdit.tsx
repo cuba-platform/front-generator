@@ -109,9 +109,9 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             key="manufacturer"
             style={{ marginBottom: "12px" }}
           >
-            {getFieldDecorator("manufacturer", { rules: [{ required: true }] })(
-              <FormField entityName={Car.NAME} propertyName="manufacturer" />
-            )}
+            {getFieldDecorator("manufacturer", {
+              rules: [{ required: true }]
+            })(<FormField entityName={Car.NAME} propertyName="manufacturer" />)}
           </Form.Item>
 
           <Form.Item
@@ -159,9 +159,9 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             key="wheelOnRight"
             style={{ marginBottom: "12px" }}
           >
-            {getFieldDecorator("wheelOnRight", { valuePropName: "checked" })(
-              <FormField entityName={Car.NAME} propertyName="wheelOnRight" />
-            )}
+            {getFieldDecorator("wheelOnRight", {
+              valuePropName: "checked"
+            })(<FormField entityName={Car.NAME} propertyName="wheelOnRight" />)}
           </Form.Item>
 
           <Form.Item
@@ -169,9 +169,9 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             key="carType"
             style={{ marginBottom: "12px" }}
           >
-            {getFieldDecorator("carType", { rules: [{ required: true }] })(
-              <FormField entityName={Car.NAME} propertyName="carType" />
-            )}
+            {getFieldDecorator("carType", {
+              rules: [{ required: true }]
+            })(<FormField entityName={Car.NAME} propertyName="carType" />)}
           </Form.Item>
 
           <Form.Item
