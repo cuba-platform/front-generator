@@ -8,11 +8,14 @@ import {Link, Redirect} from "react-router-dom";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {FormattedMessage, injectIntl, WrappedComponentProps} from 'react-intl';
 
+import {
 <% if (Object.keys(editRelations).length > 0) { %>
-  import {collection, FormField, instance, Msg, withLocalizedForm} from "@cuba-platform/react";
-<% } else { %>
-  import {FormField, instance, Msg, withLocalizedForm} from "@cuba-platform/react";
+  collection,
 <% } %>
+<% if (editAttributes.length > 0) { %>
+  FormItem,
+<% } %>
+instance, withLocalizedForm} from "@cuba-platform/react";
 
 import "<%= relDirShift %>app/App.css";
 import {<%= entity.className %>} from "<%= relDirShift %><%= entity.path %>";
@@ -71,35 +74,28 @@ class <%= editComponentName %>Component extends React.Component<Props & WrappedC
       return <Redirect to={<%= className %>.PATH}/>
     }
 
-    const {getFieldDecorator} = this.props.form;
     const {status} = this.dataInstance;
 
     return (
       <Card className='page-layout-narrow'>
         <Form onSubmit={this.handleSubmit}
               layout='vertical'>
-          <% editAttributes.forEach(attr => { %>
-          <Form.Item label={<Msg entityName={<%= entity.className %>.NAME} propertyName='<%= attr.name %>'/>}
-                    key='<%= attr.name %>'
-                    style={{marginBottom: '12px'}}>{
 
-            getFieldDecorator('<%= attr.name %>', {
-                <% if (attr.mandatory) { %>
-                  rules:[{required: true}],
-                <% } %>
-                <% if (attr.type && attr.type.fqn === 'java.lang.Boolean') { %>
-                  valuePropName:"checked"
-                <% } %>}
-            )(
-                <FormField entityName={<%= entity.className %>.NAME}
-                           propertyName='<%= attr.name %>'
-                        <% if (Object.keys(editRelations).includes(attr.name)) { %>
-                           optionsContainer={this.<%= attr.name %>sDc}
-                        <% } %>
-                />
-            )}
-          </Form.Item>
-          <% }) %>
+        <% editAttributes.forEach(attr => { %>
+          <FormItem entityName={<%= entity.className %>.NAME}
+                    propertyName="<%= attr.name %>"
+                    form={ this.props.form }
+
+            <% if (attr.mandatory) { %>
+                    rules={ [{required: true}] }
+            <% } %>
+
+            <% if (attr.type && attr.type.fqn === 'java.lang.Boolean') { %>
+                    valuePropName="checked"
+            <% } %>
+            /> <%# end FormItem %>
+        <% }) %>
+
           <Form.Item style={{textAlign: 'center'}}>
             <Link to={<%= className %>.PATH}>
               <Button htmlType="button">

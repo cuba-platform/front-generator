@@ -14,9 +14,8 @@ import {
 
 import {
   collection,
-  FormField,
+  FormItem,
   instance,
-  Msg,
   withLocalizedForm
 } from "@cuba-platform/react";
 
@@ -78,55 +77,36 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
       return <Redirect to={CarManagement.PATH} />;
     }
 
-    const { getFieldDecorator } = this.props.form;
     const { status } = this.dataInstance;
 
     return (
       <Card className="page-layout-narrow">
         <Form onSubmit={this.handleSubmit} layout="vertical">
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="manufacturer" />}
-            key="manufacturer"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("manufacturer", {
-              rules: [{ required: true }]
-            })(<FormField entityName={Car.NAME} propertyName="manufacturer" />)}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="manufacturer"
+            form={this.props.form}
+            rules={[{ required: true }]}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="model" />}
-            key="model"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("model", {})(
-              <FormField entityName={Car.NAME} propertyName="model" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="model"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="wheelOnRight" />}
-            key="wheelOnRight"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("wheelOnRight", {
-              valuePropName: "checked"
-            })(<FormField entityName={Car.NAME} propertyName="wheelOnRight" />)}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="wheelOnRight"
+            form={this.props.form}
+            valuePropName="checked"
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="garage" />}
-            key="garage"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("garage", {})(
-              <FormField
-                entityName={Car.NAME}
-                propertyName="garage"
-                optionsContainer={this.garagesDc}
-              />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="garage"
+            form={this.props.form}
+          />
 
           <Form.Item style={{ textAlign: "center" }}>
             <Link to={CarManagement.PATH}>

@@ -6,18 +6,20 @@ import { CarManagement } from "./CarManagement";
 import { FormComponentProps } from "antd/lib/form";
 import { Link, Redirect } from "react-router-dom";
 import { IReactionDisposer, observable, reaction } from "mobx";
+
 import {
   FormattedMessage,
   injectIntl,
   WrappedComponentProps
 } from "react-intl";
+
 import {
   collection,
-  FormField,
+  FormItem,
   instance,
-  Msg,
   withLocalizedForm
 } from "@cuba-platform/react";
+
 import "app/App.css";
 import { Car } from "cuba/entities/mpg$Car";
 import { Garage } from "cuba/entities/mpg$Garage";
@@ -36,11 +38,14 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
     view: "car-edit",
     loadImmediately: false
   });
+
   garagesDc = collection<Garage>(Garage.NAME, { view: "_minimal" });
+
   technicalCertificatesDc = collection<TechnicalCertificate>(
     TechnicalCertificate.NAME,
     { view: "_minimal" }
   );
+
   photosDc = collection<FileDescriptor>(FileDescriptor.NAME, {
     view: "_minimal"
   });
@@ -98,165 +103,97 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
       return <Redirect to={CarManagement.PATH} />;
     }
 
-    const { getFieldDecorator } = this.props.form;
     const { status } = this.dataInstance;
 
     return (
       <Card className="page-layout-narrow">
         <Form onSubmit={this.handleSubmit} layout="vertical">
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="manufacturer" />}
-            key="manufacturer"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("manufacturer", {
-              rules: [{ required: true }]
-            })(<FormField entityName={Car.NAME} propertyName="manufacturer" />)}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="manufacturer"
+            form={this.props.form}
+            rules={[{ required: true }]}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="model" />}
-            key="model"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("model", {})(
-              <FormField entityName={Car.NAME} propertyName="model" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="model"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="regNumber" />}
-            key="regNumber"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("regNumber", {})(
-              <FormField entityName={Car.NAME} propertyName="regNumber" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="regNumber"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="purchaseDate" />}
-            key="purchaseDate"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("purchaseDate", {})(
-              <FormField entityName={Car.NAME} propertyName="purchaseDate" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="purchaseDate"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="manufactureDate" />}
-            key="manufactureDate"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("manufactureDate", {})(
-              <FormField entityName={Car.NAME} propertyName="manufactureDate" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="manufactureDate"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="wheelOnRight" />}
-            key="wheelOnRight"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("wheelOnRight", {
-              valuePropName: "checked"
-            })(<FormField entityName={Car.NAME} propertyName="wheelOnRight" />)}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="wheelOnRight"
+            form={this.props.form}
+            valuePropName="checked"
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="carType" />}
-            key="carType"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("carType", {
-              rules: [{ required: true }]
-            })(<FormField entityName={Car.NAME} propertyName="carType" />)}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="carType"
+            form={this.props.form}
+            rules={[{ required: true }]}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="ecoRank" />}
-            key="ecoRank"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("ecoRank", {})(
-              <FormField entityName={Car.NAME} propertyName="ecoRank" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="ecoRank"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="maxPassengers" />}
-            key="maxPassengers"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("maxPassengers", {})(
-              <FormField entityName={Car.NAME} propertyName="maxPassengers" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="maxPassengers"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="price" />}
-            key="price"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("price", {})(
-              <FormField entityName={Car.NAME} propertyName="price" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="price"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="mileage" />}
-            key="mileage"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("mileage", {})(
-              <FormField entityName={Car.NAME} propertyName="mileage" />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="mileage"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="garage" />}
-            key="garage"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("garage", {})(
-              <FormField
-                entityName={Car.NAME}
-                propertyName="garage"
-                optionsContainer={this.garagesDc}
-              />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="garage"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={
-              <Msg entityName={Car.NAME} propertyName="technicalCertificate" />
-            }
-            key="technicalCertificate"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("technicalCertificate", {})(
-              <FormField
-                entityName={Car.NAME}
-                propertyName="technicalCertificate"
-                optionsContainer={this.technicalCertificatesDc}
-              />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="technicalCertificate"
+            form={this.props.form}
+          />
 
-          <Form.Item
-            label={<Msg entityName={Car.NAME} propertyName="photo" />}
-            key="photo"
-            style={{ marginBottom: "12px" }}
-          >
-            {getFieldDecorator("photo", {})(
-              <FormField
-                entityName={Car.NAME}
-                propertyName="photo"
-                optionsContainer={this.photosDc}
-              />
-            )}
-          </Form.Item>
+          <FormItem
+            entityName={Car.NAME}
+            propertyName="photo"
+            form={this.props.form}
+          />
 
           <Form.Item style={{ textAlign: "center" }}>
             <Link to={CarManagement.PATH}>
