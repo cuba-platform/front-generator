@@ -6,7 +6,6 @@ import { CarManagement } from "./CarManagement";
 import { FormComponentProps } from "antd/lib/form";
 import { Link, Redirect } from "react-router-dom";
 import { IReactionDisposer, observable, reaction } from "mobx";
-
 import {
   FormattedMessage,
   injectIntl,
@@ -181,18 +180,21 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             entityName={Car.NAME}
             propertyName="garage"
             form={this.props.form}
+            optionsContainer={this.garagesDc}
           />
 
           <FormItem
             entityName={Car.NAME}
             propertyName="technicalCertificate"
             form={this.props.form}
+            optionsContainer={this.technicalCertificatesDc}
           />
 
           <FormItem
             entityName={Car.NAME}
             propertyName="photo"
             form={this.props.form}
+            optionsContainer={this.photosDc}
           />
 
           <Form.Item style={{ textAlign: "center" }}>

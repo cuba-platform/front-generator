@@ -106,6 +106,7 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             entityName={Car.NAME}
             propertyName="garage"
             form={this.props.form}
+            optionsContainer={this.garagesDc}
           />
 
           <Form.Item style={{ textAlign: "center" }}>

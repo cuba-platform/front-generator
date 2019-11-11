@@ -93,7 +93,10 @@ class <%= editComponentName %>Component extends React.Component<Props & WrappedC
             <% if (attr.type && attr.type.fqn === 'java.lang.Boolean') { %>
                     valuePropName="checked"
             <% } %>
-            /> <%# end FormItem %>
+            <% if (Object.keys(editRelations).includes(attr.name)) { %>
+                      optionsContainer={this.<%= attr.name %>sDc}
+            <% } %>
+          /> <%# end FormItem %>
         <% }) %>
 
           <Form.Item style={{textAlign: 'center'}}>
