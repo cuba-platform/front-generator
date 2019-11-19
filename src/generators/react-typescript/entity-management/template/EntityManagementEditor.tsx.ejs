@@ -7,15 +7,18 @@ import {FormComponentProps} from "antd/lib/form";
 import {Link, Redirect} from "react-router-dom";
 import {IReactionDisposer, observable, reaction} from "mobx";
 import {FormattedMessage, injectIntl, WrappedComponentProps} from 'react-intl';
-
 import {
 <% if (Object.keys(editRelations).length > 0) { %>
   collection,
 <% } %>
-<% if (editAttributes.length > 0) { %>
-  FormItem,
-<% } %>
-instance, withLocalizedForm} from "@cuba-platform/react";
+  FormField,
+  instance,
+  Msg,
+  withLocalizedForm,
+  checkConstraintViolations,
+  clearErrorsFromPreviousSubmission,
+  constraintViolationsToFormFields,
+} from "@cuba-platform/react";
 
 import "<%= relDirShift %>app/App.css";
 import {<%= entity.className %>} from "<%= relDirShift %><%= entity.path %>";
