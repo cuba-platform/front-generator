@@ -45,11 +45,9 @@ describe('test:e2e:react:scr', () => {
 
     await checkFormat(SCR_APP_DIR);
 
-    //todo get back after dev version of cuba react will be published
+    await installAndBuild('scr-model', SCR_APP_DIR);
 
-    // await installAndBuild('scr-model', SCR_APP_DIR);
-    //
-    // await runTests(SCR_APP_DIR);
+    await runTests(SCR_APP_DIR);
   });
 
 });
