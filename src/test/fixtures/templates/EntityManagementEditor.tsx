@@ -1,11 +1,11 @@
 import * as React from "react";
 import { FormEvent } from "react";
-import { Button, Card, Form, message } from "antd";
+import { Alert, Button, Card, Form, message } from "antd";
 import { observer } from "mobx-react";
 import { CarManagement } from "./CarManagement";
 import { FormComponentProps } from "antd/lib/form";
 import { Link, Redirect } from "react-router-dom";
-import { IReactionDisposer, observable, reaction } from "mobx";
+import { IReactionDisposer, observable, reaction, toJS } from "mobx";
 import {
   FormattedMessage,
   injectIntl,
@@ -16,10 +16,11 @@ import {
   collection,
   Field,
   instance,
-  checkConstraintViolations,
-  clearErrorsFromPreviousSubmission,
-  constraintViolationsToFormFields,
-  withLocalizedForm
+  withLocalizedForm,
+  extractServerValidationErrors,
+  constructFieldsWithErrors,
+  clearFieldErrors,
+  MultilineText
 } from "@cuba-platform/react";
 
 import "../../app/App.css";
@@ -48,11 +49,14 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
 
   fields = ["manufacturer", "model", "wheelOnRight", "garage"];
 
+  @observable
+  globalErrors: string[] = [];
+
   handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) {
-        message.warn(
+        message.error(
           this.props.intl.formatMessage({
             id: "management.editor.validationError"
           })
@@ -70,19 +74,20 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
         .catch((e: any) => {
           if (e.response && typeof e.response.json === "function") {
             e.response.json().then((response: any) => {
-              clearErrorsFromPreviousSubmission(this.props.form);
-              const constraintViolations: Map<
-                string,
-                string[]
-              > = checkConstraintViolations(response);
-              if (constraintViolations.size > 0) {
+              clearFieldErrors(this.props.form);
+              const {
+                globalErrors,
+                fieldErrors
+              } = extractServerValidationErrors(response);
+              this.globalErrors = globalErrors;
+              if (fieldErrors.size > 0) {
                 this.props.form.setFields(
-                  constraintViolationsToFormFields(
-                    constraintViolations,
-                    this.props.form
-                  )
+                  constructFieldsWithErrors(fieldErrors, this.props.form)
                 );
-                message.warn(
+              }
+
+              if (fieldErrors.size > 0 || globalErrors.length > 0) {
+                message.error(
                   this.props.intl.formatMessage({
                     id: "management.editor.validationError"
                   })
@@ -150,6 +155,14 @@ class CarEditComponent extends React.Component<Props & WrappedComponentProps> {
             optionsContainer={this.garagesDc}
             getFieldDecoratorOpts={{}}
           />
+
+          {this.globalErrors.length > 0 && (
+            <Alert
+              message={<MultilineText lines={toJS(this.globalErrors)} />}
+              type="error"
+              style={{ marginBottom: "24px" }}
+            />
+          )}
 
           <Form.Item style={{ textAlign: "center" }}>
             <Link to={CarManagement.PATH}>
