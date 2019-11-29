@@ -12,7 +12,6 @@ const LOG_DIR = path.join(GENERATED_DIR, 'logs');
 module.exports = function (generatorName, logFileSuffix) {
 
   let logFileName;
-  const logCaption = `${generatorName}:${logFileSuffix}`;
 
   function init() {
 
@@ -116,6 +115,7 @@ module.exports = function (generatorName, logFileSuffix) {
   }
 
   async function runTests(appDir) {
+    const logCaption = `${generatorName}:${logFileSuffix}`;
     console.log(`${logCaption} going to run test`);
 
     const testCommand = addEnvVars('npm test');
@@ -131,35 +131,12 @@ module.exports = function (generatorName, logFileSuffix) {
     return (process.platform === 'linux' ? 'CI=true ' : '') + cmd;
   }
 
-  // git clone git@github.com:cuba-labs/sample-car-rent.git
-  // cd sample-car-rent
-  // ./gradlew setupTomcat assemble
-  // ./gradlew startDb createDb updateDb deploy start
-  async function installBackEnd(appDir) {
-
-    await cmd(`cd ${appDir} && git clone https://github.com/cuba-labs/sample-car-rent.git`,
-      `${logCaption} start cloning backend`,
-      `${logCaption} done cloning backend`);
-
-    const backDir = `${appDir}/sample-car-rent`;
-
-    // TODO wait for start
-    await cmd(`cd ${backDir} && ./gradlew setupTomcat assemble startDb createDb updateDb deploy start`,
-      `${logCaption} start build and start backend`,
-      `${logCaption} backend started`);
-
-    // run cypress tests here
-
-    await cmd(`cd ${backDir} && ./gradlew stop stopDb`, ``, ``);
-  }
-
   return {
     runGenerator: runGenerator,
     assertContent: assertContent,
     cmd: cmd,
     init: init,
     installAndBuild: installAndBuild,
-    installBackEnd: installBackEnd,
     checkFormat: checkFormat,
     runTests: runTests
   };

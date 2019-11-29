@@ -3,7 +3,7 @@ const {promisify} = require('util');
 const rimraf = promisify(require('rimraf'));
 
 const {
-  runGenerator, assertContent, init, installAndBuild, checkFormat, runTests, installBackEnd
+  runGenerator, assertContent, init, installAndBuild, checkFormat, runTests
 } = require('./e2e-common')('react-typescript', 'scr');
 
 const answers = require('./fixtures/react-client/answers.json');
@@ -48,8 +48,6 @@ describe('test:e2e:react:scr', () => {
     await installAndBuild('scr-model', SCR_APP_DIR);
 
     await runTests(SCR_APP_DIR);
-
-    await installBackEnd(SCR_APP_DIR);
   });
 
 });

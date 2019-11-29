@@ -1,6 +1,7 @@
 .tmp
 .idea
 test/e2e/generated
+test/puppeteer/generated
 src/test/generated
 lib
 node_modules
