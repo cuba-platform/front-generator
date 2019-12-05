@@ -287,14 +287,14 @@ if by the '-' character then descending. If there is no special character before
 It shall be used instead of redefining `columns` in `tableProps` if the goal is to extend rather that fully replace the existing
 custom column-related functionality.
 
-### Routing
+### Routing And Menu
 
 Routing is based on well-known [React Router](https://reacttraining.com/react-router/web/guides/quick-start) library.
 The generated app has a single point (`src/routing.ts`) to define screens which will be automatically placed
 in the main menu:
 
 ```typescript jsx
-mainRoutes.push({
+menuItems.push({
   pathPattern: '/pets', // pattern may be used to consume some parameters, e.g.: /pets/:petId?
   menuLink: '/pest',
   component: PetBrowser, // component to be rendered, should be imported in `routes.ts`
@@ -307,14 +307,37 @@ The `src/App.tsx` contains `Switch` component which renders screen depending on 
 ```typescript jsx
   <Switch>
     <Route exact={true} path="/" component={HomePage}/>
-    {mainRoutes.map((route) =>
-      <Route key={route.pathPattern} path={route.pathPattern} component={route.component}/>
+  {collectRouteItems(menuItems).map(route => (  // get all routes from main and sub menus
+  <Route key={route.pathPattern} path={route.pathPattern} component={route.component}/>
     )}
   </Switch>
 ```
 
 You can manually add `Route` to `Switch` component or customize the structure used in `routes.ts` for example in order to create 
 hierarchical menu.
+
+#### Sub Menus
+
+To create hierarchical menu you need to create `SubMenu` instance  in `routes.ts` and add it to `menuItems`
+```typescript jsx
+// This is RouteItem object that we want to see in User Settings sub menu
+const userProfileRouteItem = {
+  pathPattern: "/profile",
+  menuLink: "/profile",
+  component: UserProfile,
+  caption: "UserProfile"
+};
+
+// SubMenu 
+const userSettingsSubMenu = {
+  caption: 'UserSettings', // add router.UserSettings key to src/i18n/en.json for valid caption
+  items: [userProfileRouteItem]};
+
+// Add sub menu to menu config
+menuItems.push(userSettingsSubMenu);
+```
+
+Sub menus can have unlimited nesting. One sub menu could be used as item of another.
 
 ### Forms
 
