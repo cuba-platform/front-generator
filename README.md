@@ -652,7 +652,7 @@ API reference for CUBA React components can be found [here](http://cuba-platform
 
 <a name="react-client-routing"/>
 
-### Routing And Menu
+### Routing and Menu
 
 Routing is based on well-known [React Router](https://reacttraining.com/react-router/web/guides/quick-start) library.
 The generated app has a single point (`src/routing.ts`) to define screens which will be automatically placed

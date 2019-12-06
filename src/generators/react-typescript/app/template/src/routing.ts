@@ -2,7 +2,7 @@ import {MenuConfig} from '@cuba-platform/react';
 
 export const menuItems = MenuConfig.getInstance().items;
 
-// Code above demonstrates how we can create SubMenu section
+// Code below demonstrates how we can create SubMenu section
 // Remove '/*' '*/' comments and restart app to get this block in menu
 
 /*
