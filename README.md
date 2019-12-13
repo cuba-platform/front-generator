@@ -1,3 +1,5 @@
+> :bulb: Moved to [cuba-platform/frontend/packages/front-generator](https://github.com/cuba-platform/frontend/tree/master/packages/front-generator)
+
 # CUBA Platform Front-end and TypeScript SDK Generator
 
 [![Build Status](https://travis-ci.org/cuba-platform/front-generator.svg?branch=master)](https://travis-ci.org/cuba-platform/front-generator)
